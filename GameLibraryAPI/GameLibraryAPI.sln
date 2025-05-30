@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.13.36105.23 d17.13
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameLibraryAPI", "GameLibraryAPI\GameLibraryAPI.csproj", "{76752615-8BD4-4CBC-A00A-0BC55EE12526}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameLibrary.Api", "GameLibraryAPI\GameLibrary.Api.csproj", "{76752615-8BD4-4CBC-A00A-0BC55EE12526}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameLibrary.Core", "GameLibrary.Core\GameLibrary.Core.csproj", "{2E6CF421-9CAB-495F-AB72-EE430F09C982}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameLibrary.Infrastructure", "GameLibrary.Infrastructure\GameLibrary.Infrastructure.csproj", "{87914388-74DC-44B9-8FCF-55E072A4930A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GameLibrary.Database", "GameLibrary.Database\GameLibrary.Database.csproj", "{94D90669-BD34-4654-B93C-26B8290A008A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{76752615-8BD4-4CBC-A00A-0BC55EE12526}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{76752615-8BD4-4CBC-A00A-0BC55EE12526}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{76752615-8BD4-4CBC-A00A-0BC55EE12526}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E6CF421-9CAB-495F-AB72-EE430F09C982}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E6CF421-9CAB-495F-AB72-EE430F09C982}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E6CF421-9CAB-495F-AB72-EE430F09C982}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E6CF421-9CAB-495F-AB72-EE430F09C982}.Release|Any CPU.Build.0 = Release|Any CPU
+		{87914388-74DC-44B9-8FCF-55E072A4930A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{87914388-74DC-44B9-8FCF-55E072A4930A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{87914388-74DC-44B9-8FCF-55E072A4930A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{87914388-74DC-44B9-8FCF-55E072A4930A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{94D90669-BD34-4654-B93C-26B8290A008A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{94D90669-BD34-4654-B93C-26B8290A008A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{94D90669-BD34-4654-B93C-26B8290A008A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{94D90669-BD34-4654-B93C-26B8290A008A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
