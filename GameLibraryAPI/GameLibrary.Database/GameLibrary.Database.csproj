@@ -20,4 +20,12 @@
     <PackageReference Include="Microsoft.Extensions.Configuration" Version="9.0.5" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\GameLibrary.Infrastructure\GameLibrary.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>

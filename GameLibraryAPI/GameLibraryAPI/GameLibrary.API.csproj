@@ -18,4 +18,8 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\GameLibrary.Core\GameLibrary.Core.csproj" />
+  </ItemGroup>
+
 </Project>
