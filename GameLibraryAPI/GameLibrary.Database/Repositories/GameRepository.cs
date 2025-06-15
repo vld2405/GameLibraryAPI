@@ -11,7 +11,7 @@ namespace GameLibrary.Database.Repositories
 {
     public class GameRepository : BaseRepository<Game>
     {
-        public GameRepository(Context.GameLibraryDatabaseContext dbContext) : base(dbContext)
+        public GameRepository(GameLibraryDatabaseContext dbContext) : base(dbContext)
         {
         }
         public async Task<Game?> GetGameAsync(int id)
