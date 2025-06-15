@@ -1,4 +1,5 @@
 ﻿using GameLibrary.Database.Context;
+using GameLibrary.Database.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
@@ -15,6 +16,12 @@ namespace GameLibrary.Database
         {
             services.AddDbContext<GameLibraryDatabaseContext>();
             services.AddScoped<DbContext, GameLibraryDatabaseContext>();
+
+            services.AddScoped<DeveloperRepository>();
+            services.AddScoped<PublisherRepository>();
+            services.AddScoped<GameRepository>();
+            services.AddScoped<GenreRepository>();
+            services.AddScoped<UserRepository>();
 
             return services;
         }
