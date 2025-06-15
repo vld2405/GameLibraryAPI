@@ -1,4 +1,7 @@
-﻿using System;
+﻿using GameLibrary.Database.Context;
+using GameLibrary.Database.Entities;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +9,31 @@ using System.Threading.Tasks;
 
 namespace GameLibrary.Database.Repositories
 {
-    class PublisherRepository
+    public class PublisherRepository : BaseRepository<Publisher>
     {
+        public PublisherRepository(GameLibraryDatabaseContext dbContext) : base(dbContext)
+        {
+        }
+        public async Task<Publisher?> GetPublisherAsync(int id)
+        {
+            return await GetRecords().FirstOrDefaultAsync(p => p.Id == id);
+        }
+        public async Task<IEnumerable<Publisher>> GetPublishersAsync()
+        {
+            return await GetRecords().ToListAsync();
+        }
+        public async Task<(IEnumerable<Publisher> publishers, int totalCount)> GetPublishersAsync(int? pageNumber = null, int? pageSize = null)
+        {
+            IQueryable<Publisher> query = GetRecords();
+            var totalCount = await query.CountAsync();
+            if (pageNumber.HasValue && pageSize.HasValue && pageNumber > 0 && pageSize > 0)
+            {
+                query = query
+                    .Skip((pageNumber.Value - 1) * pageSize.Value)
+                    .Take(pageSize.Value);
+            }
+            var publishers = await query.ToListAsync();
+            return (publishers, totalCount);
+        }
     }
 }
