@@ -12,17 +12,18 @@ namespace GameLibrary.Database.Repositories
     public class DeveloperRepository : BaseRepository<Developer>
     {
         public DeveloperRepository(GameLibraryDatabaseContext dbContext) : base(dbContext)
-        {
-        }
+        {}
 
         public async Task<Developer?> GetDevelopersAsync(int id)
         {
             return await GetRecords().FirstOrDefaultAsync(nt => nt.Id == id);
         }
+
         public async Task<IEnumerable<Developer>> GetDevelopersAsync()
         {
             return await GetRecords().ToListAsync();
         }
+
         public async Task<(IEnumerable<Developer> developers, int totalCount)> GetDevelopersAsync(int? pageNumber = null, int? pageSize = null)
         {
             IQueryable<Developer> query = GetRecords();
