@@ -24,22 +24,23 @@ namespace GameLibrary.Database.Repositories
             return await GetRecords().ToListAsync();
         }
 
-        public async Task<(IEnumerable<Developer> developers, int totalCount)> GetDevelopersAsync(int? pageNumber = null, int? pageSize = null)
+        public async Task<(IEnumerable<Developer> Developers, int TotalCount)> GetDevelopersAsync(int pageNumber = 1, int pageSize = 10)
         {
-            IQueryable<Developer> query = GetRecords().Include(d => d.Games);
+            if (pageNumber < 1) pageNumber = 1;
+            if (pageSize < 1) pageSize = 10;
+
+            var query = GetRecords()
+                .Include(d => d.Games)
+                .OrderBy(d => d.Id);
 
             var totalCount = await query.CountAsync();
 
-            if (pageNumber.HasValue && pageSize.HasValue && pageNumber > 0 && pageSize > 0)
-            {
-                query = query
-                    .Skip((pageNumber.Value - 1) * pageSize.Value)
-                    .Take(pageSize.Value);
-            }
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
-            var developers = await query.ToListAsync();
-
-            return (developers, totalCount);
+            return (items, totalCount);
         }
 
         public async Task<IEnumerable<Developer>> GetDevelopersAsync(string? name = null, string? sortOrder = "asc")
@@ -61,6 +62,16 @@ namespace GameLibrary.Database.Repositories
         public async Task AddDevAsync(Developer entity)
         {
             Insert(entity);
+            await SaveChangesAsync();
+        }
+
+        public async Task SoftDeleteDevAsync(int id)
+        {
+            var developer = await GetFirstOrDefaultAsync(id);
+            if (developer == null)
+                throw new KeyNotFoundException($"Developer with ID {id} not found.");
+
+            SoftDelete(developer);
             await SaveChangesAsync();
         }
 

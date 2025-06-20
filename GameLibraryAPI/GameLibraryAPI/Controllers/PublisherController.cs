@@ -15,11 +15,35 @@ namespace GameLibrary.Api.Controllers
             return Ok("Publisher added successfully");
         }
 
-
         [HttpGet("get-publishers")]
         public async Task<IActionResult> GetPublishersAsync()
         {
             return Ok(await publisherService.GetPublishersAsync());
+        }
+
+        [HttpGet("get-publishers-paginated")]
+        public async Task<IActionResult> GetGenresPaginatedAsync([FromQuery] int pageNumber, [FromQuery] int pageSize)
+        {
+            var paged = await publisherService.GetPublishersPaginatedAsync(pageNumber, pageSize);
+            return Ok(new
+            {
+                Publishers = paged.Publishers,
+                TotalPublishers = paged.TotalCount
+            });
+        }
+
+        [HttpGet("get-publishers-by-{id}")]
+        public async Task<IActionResult> GetGenreFromIdAsync(int id)
+        {
+            var result = await publisherService.GetPublisherFromIdAsync(id);
+            return Ok(result);
+        }
+
+        [HttpDelete("soft-delete/{id}")]
+        public async Task<IActionResult> SoftDeleteGenreAsync(int id)
+        {
+            await publisherService.SoftDeletePublisherAsync(id);
+            return NoContent();
         }
     }
 }

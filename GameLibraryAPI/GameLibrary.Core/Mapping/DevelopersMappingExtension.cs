@@ -1,5 +1,6 @@
 ﻿using GameLibrary.Core.Dtos.Common;
 using GameLibrary.Core.Dtos.Requests;
+using GameLibrary.Core.Dtos.Responses;
 using GameLibrary.Database.Entities;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -22,11 +23,15 @@ namespace GameLibrary.Core.Mapping
 
         }
 
-        public static DeveloperDto ToDto(Developer developer)
+        public static GetDeveloperResponse ToResponseDto(this Developer developer)
         {
-            return new DeveloperDto
+            return new GetDeveloperResponse
             {
-                Name = developer.Name
+                Name = developer.Name,
+                GamesNames = developer.Games?.Select(g => g.Name).ToList() ?? new List<string>(),
+                CreatedAt = developer.CreatedAt,
+                ModifiedAt = developer.ModifiedAt,
+                DeletedAt = developer.DeletedAt
             };
         }
     }

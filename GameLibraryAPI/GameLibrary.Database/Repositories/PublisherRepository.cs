@@ -57,5 +57,15 @@ namespace GameLibrary.Database.Repositories
             Insert(entity);
             await SaveChangesAsync();
         }
+
+        public async Task SoftDeletePublisherAsync(int id)
+        {
+            var publisher = await GetFirstOrDefaultAsync(id);
+            if (publisher == null)
+                throw new KeyNotFoundException($"Publisher with ID {id} not found.");
+
+            SoftDelete(publisher);
+            await SaveChangesAsync();
+        }
     }
 }

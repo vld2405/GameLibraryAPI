@@ -1,5 +1,6 @@
 ﻿using GameLibrary.Core.Dtos.Common;
 using GameLibrary.Core.Dtos.Requests;
+using GameLibrary.Core.Dtos.Responses;
 using GameLibrary.Database.Entities;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,17 @@ namespace GameLibrary.Core.Mapping
             return new GenreDto
             {
                 Name = genre.Name
+            };
+        }
+        public static GetGenreResponse ToResponseDto(this Genre genre)
+        {
+            return new GetGenreResponse
+            {
+                Name = genre.Name,
+                GamesNames = genre.Games?.Select(g => g.Name).ToList() ?? new List<string>(),
+                CreatedAt = genre.CreatedAt,
+                ModifiedAt = genre.ModifiedAt,
+                DeletedAt = genre.DeletedAt
             };
         }
     }

@@ -21,5 +21,30 @@ namespace GameLibrary.Api.Controllers
         {
             return Ok(await genresService.GetGenresAsync());
         }
+
+        [HttpGet("get-genres-paginated")]
+        public async Task<IActionResult> GetGenresPaginatedAsync([FromQuery] int pageNumber, [FromQuery] int pageSize)
+        {
+            var paged = await genresService.GetGenresPaginatedAsync(pageNumber, pageSize);
+            return Ok(new
+            {
+                Genres = paged.Genres,
+                TotalGenres = paged.TotalCount
+            });
+        }
+
+        [HttpGet("get-genres-by-{id}")]
+        public async Task<IActionResult> GetGenreFromIdAsync(int id)
+        {
+            var result = await genresService.GetGenreFromIdAsync(id);
+            return Ok(result);
+        }
+
+        [HttpDelete("soft-delete/{id}")]
+        public async Task<IActionResult> SoftDeleteGenreAsync(int id)
+        {
+            await genresService.SoftDeleteGenreAsync(id);
+            return NoContent();
+        }
     }
 }
