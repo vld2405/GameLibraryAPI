@@ -1,4 +1,5 @@
-﻿using GameLibrary.Core.Dtos.Common;
+﻿using Azure.Core;
+using GameLibrary.Core.Dtos.Common;
 using GameLibrary.Core.Dtos.Requests;
 using GameLibrary.Database.Entities;
 using System;
@@ -16,6 +17,7 @@ namespace GameLibrary.Core.Mapping
             Game game = new Game();
             game.Name = gameDto.Name;
             game.Description = gameDto.Description;
+
             game.ReleaseDate = gameDto.ReleaseDate;
 
             return game;
