@@ -1,5 +1,6 @@
 ﻿using GameLibrary.Core.Dtos.Common;
 using GameLibrary.Core.Dtos.Requests;
+using GameLibrary.Core.Dtos.Responses;
 using GameLibrary.Database.Entities;
 using System;
 using System.Collections.Generic;
@@ -19,13 +20,24 @@ namespace GameLibrary.Core.Mapping
             return publisher;
         }
 
-       public static PublisherDto ToDto(Publisher publisher)
+        public static PublisherDto ToDto(Publisher publisher)
         {
             return new PublisherDto
             {
                 Name = publisher.Name
             };
         }
-       
+
+        public static GetPublisherResponse ToResponseDto(this Publisher publisher)
+        {
+            return new GetPublisherResponse
+            {
+                Name = publisher.Name,
+                GamesNames = publisher.Games?.Select(g => g.Name).ToList() ?? new List<string>(),
+                CreatedAt = publisher.CreatedAt,
+                ModifiedAt = publisher.ModifiedAt,
+                DeletedAt = publisher.DeletedAt
+            };
+        }
     }
 }

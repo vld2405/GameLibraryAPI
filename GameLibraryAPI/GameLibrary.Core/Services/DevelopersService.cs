@@ -1,4 +1,5 @@
 ﻿using GameLibrary.Core.Dtos.Requests;
+using GameLibrary.Core.Dtos.Responses;
 using GameLibrary.Core.Mapping;
 using GameLibrary.Database.Entities;
 using GameLibrary.Database.Repositories;
@@ -22,8 +23,19 @@ public class DevelopersService(DeveloperRepository devsRepository)
         return await devsRepository.GetDevelopersAsync();
     }
 
-    public async Task<(IEnumerable<Developer> developers, int totalCount)> GetDevsPaginatedAsync(int? pageNumber = null, int? pageSize = null)
+    public async Task<(IEnumerable<GetDeveloperResponse> Developers, int TotalCount)> GetDevsPaginatedAsync(int pageNumber = 1, int pageSize = 10)
     {
-        return await devsRepository.GetDevelopersAsync(pageNumber, pageSize);
+        var (result, total) = await devsRepository.GetDevelopersAsync(pageNumber, pageSize);
+        return (result.Select(d => d.ToResponseDto()).ToList(), total);
+    }
+
+    public async Task<Developer?> GetDeveloperFromIdAsync(int id)
+    {
+        return await devsRepository.GetDevelopersAsync(id);
+    }
+
+    public async Task SoftDeleteDeveloperAsync(int id)
+    {
+        await devsRepository.SoftDeleteDevAsync(id);
     }
 }

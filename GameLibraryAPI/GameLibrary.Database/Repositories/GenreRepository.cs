@@ -22,22 +22,23 @@ namespace GameLibrary.Database.Repositories
         {
             return await GetRecords().ToListAsync();
         }
-        public async Task<(IEnumerable<Genre> genres, int totalCount)> GetGenresAsync(int? pageNumber = null, int? pageSize = null)
+        public async Task<(IEnumerable<Genre> Genres, int TotalCount)> GetGenresAsync(int pageNumber = 1, int pageSize = 10)
         {
-            IQueryable<Genre> query = GetRecords().Include(g => g.Games);
+            if (pageNumber < 1) pageNumber = 1;
+            if (pageSize < 1) pageSize = 10;
+
+            var query = GetRecords()
+                .Include(d => d.Games)
+                .OrderBy(d => d.Id);
 
             var totalCount = await query.CountAsync();
 
-            if (pageNumber.HasValue && pageSize.HasValue && pageNumber > 0 && pageSize > 0)
-            {
-                query = query
-                    .Skip((pageNumber.Value - 1) * pageSize.Value)
-                    .Take(pageSize.Value);
-            }
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
 
-            var genres = await query.ToListAsync();
-
-            return (genres, totalCount);
+            return (items, totalCount);
         }
 
         public async Task<IEnumerable<Genre>> GetGenresAsync(string? name = null, string? sortOrder = "asc")
@@ -59,6 +60,16 @@ namespace GameLibrary.Database.Repositories
         public async Task AddGenreAsync(Genre entity)
         {
             Insert(entity);
+            await SaveChangesAsync();
+        }
+
+        public async Task SoftDeleteGenreAsync(int id)
+        {
+            var genre = await GetFirstOrDefaultAsync(id);
+            if (genre == null)
+                throw new KeyNotFoundException($"Genre with ID {id} not found.");
+
+            SoftDelete(genre);
             await SaveChangesAsync();
         }
     }

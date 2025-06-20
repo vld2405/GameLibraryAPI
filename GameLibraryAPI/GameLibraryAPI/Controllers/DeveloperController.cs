@@ -25,10 +25,28 @@ namespace GameLibrary.Api.Controllers
         }
 
         [HttpGet("get-developers-paginated")]
-        public async Task<ActionResult<object>> GetDevelopersPaginatedAsync([FromQuery] int? pageNumber = null, [FromQuery] int? pageSize = null)
+        public async Task<IActionResult> GetDevelopersPaginatedAsync([FromQuery] int pageNumber, [FromQuery] int pageSize)
         {
-            var result = await devsService.GetDevsPaginatedAsync(pageNumber, pageSize);
+            var paged = await devsService.GetDevsPaginatedAsync(pageNumber, pageSize);
+            return Ok(new
+            {
+                Developers = paged.Developers,
+                TotalDevs = paged.TotalCount
+            });
+        }
+
+        [HttpGet("get-developers-by-{id}")]
+        public async Task<IActionResult> GetDeveloperFromIdAsync(int id)
+        {
+            var result = await devsService.GetDeveloperFromIdAsync(id);
             return Ok(result);
+        }
+
+        [HttpDelete("soft-delete/{id}")]
+        public async Task<IActionResult> SoftDeleteDeveloperAsync(int id)
+        {
+            await devsService.SoftDeleteDeveloperAsync(id);
+            return NoContent();
         }
     }
 }
