@@ -13,14 +13,17 @@ public class DevelopersService(DeveloperRepository devsRepository)
             throw new ArgumentNullException(nameof(payload));
 
         var newDev = payload.ToEntity();
-        newDev.CreatedAt = DateTime.UtcNow;
 
-        devsRepository.Insert(newDev);
-        await devsRepository.SaveChangesAsync();
+        await devsRepository.AddDevAsync(newDev);
     }
 
     public async Task<IEnumerable<Developer>> GetDevsAsync()
     {
         return await devsRepository.GetDevelopersAsync();
+    }
+
+    public async Task<(IEnumerable<Developer> developers, int totalCount)> GetDevsPaginatedAsync(int? pageNumber = null, int? pageSize = null)
+    {
+        return await devsRepository.GetDevelopersAsync(pageNumber, pageSize);
     }
 }

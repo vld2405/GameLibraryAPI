@@ -14,10 +14,8 @@ public class PublisherService(PublisherRepository publisherRepository)
             throw new ArgumentNullException(nameof(payload));
 
         var newPublisher = payload.ToEntity();
-        newPublisher.CreatedAt = DateTime.UtcNow;
 
-        publisherRepository.Insert(newPublisher);
-        await publisherRepository.SaveChangesAsync();
+        await publisherRepository.AddPublisherAsync(newPublisher);
     }
 
     public async Task<IEnumerable<Publisher>> GetPublishersAsync()

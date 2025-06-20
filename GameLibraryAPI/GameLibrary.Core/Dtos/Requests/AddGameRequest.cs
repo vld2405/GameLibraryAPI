@@ -11,5 +11,8 @@ namespace GameLibrary.Core.Dtos.Requests
         public string Name { get; set; }
         public DateTime ReleaseDate { get; set; }
         public string Description { get; set; }
+        public List<int> DeveloperIds { get; set; }
+        public List<int> PublisherIds { get; set; }
+        public List<int> GenreIds { get; set; }
     }
 }
