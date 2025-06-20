@@ -16,7 +16,7 @@ namespace GameLibrary.Database.Repositories
 
         public async Task<Developer?> GetDevelopersAsync(int id)
         {
-            return await GetRecords().FirstOrDefaultAsync(nt => nt.Id == id);
+            return await GetRecords().FirstOrDefaultAsync(d => d.Id == id);
         }
 
         public async Task<IEnumerable<Developer>> GetDevelopersAsync()
@@ -26,7 +26,7 @@ namespace GameLibrary.Database.Repositories
 
         public async Task<(IEnumerable<Developer> developers, int totalCount)> GetDevelopersAsync(int? pageNumber = null, int? pageSize = null)
         {
-            IQueryable<Developer> query = GetRecords();
+            IQueryable<Developer> query = GetRecords().Include(d => d.Games);
 
             var totalCount = await query.CountAsync();
 
@@ -42,7 +42,21 @@ namespace GameLibrary.Database.Repositories
             return (developers, totalCount);
         }
 
+        public async Task<IEnumerable<Developer>> GetDevelopersAsync(string? name = null, string? sortOrder = "asc")
+        {
+            IQueryable<Developer> query = GetRecords().Include(d=>d.Games);
 
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(d => d.Name.ToLower().Contains(name.ToLower()));
+            }
+
+            query = sortOrder?.ToLower() == "desc"
+                ? query.OrderByDescending(d => d.Name)
+                : query.OrderBy(d => d.Name);
+
+            return await query.ToListAsync();
+        }
 
     }
 }

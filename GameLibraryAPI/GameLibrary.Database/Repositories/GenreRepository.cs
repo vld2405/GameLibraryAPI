@@ -16,7 +16,7 @@ namespace GameLibrary.Database.Repositories
         }
         public async Task<Genre?> GetGenresAsync(int id)
         {
-            return await GetRecords().FirstOrDefaultAsync(nt => nt.Id == id);
+            return await GetRecords().FirstOrDefaultAsync(g => g.Id == id);
         }
         public async Task<IEnumerable<Genre>> GetGenresAsync()
         {
@@ -24,7 +24,7 @@ namespace GameLibrary.Database.Repositories
         }
         public async Task<(IEnumerable<Genre> genres, int totalCount)> GetGenresAsync(int? pageNumber = null, int? pageSize = null)
         {
-            IQueryable<Genre> query = GetRecords();
+            IQueryable<Genre> query = GetRecords().Include(g => g.Games);
 
             var totalCount = await query.CountAsync();
 
@@ -38,6 +38,22 @@ namespace GameLibrary.Database.Repositories
             var genres = await query.ToListAsync();
 
             return (genres, totalCount);
+        }
+
+        public async Task<IEnumerable<Genre>> GetGenresAsync(string? name = null, string? sortOrder = "asc")
+        {
+            IQueryable<Genre> query = GetRecords().Include(g => g.Games);
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(g => g.Name.ToLower().Contains(name.ToLower()));
+            }
+
+            query = sortOrder?.ToLower() == "desc"
+                ? query.OrderByDescending(g => g.Name)
+                : query.OrderBy(g => g.Name);
+
+            return await query.ToListAsync();
         }
     }
 }
