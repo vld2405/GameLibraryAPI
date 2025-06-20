@@ -24,7 +24,7 @@ namespace GameLibrary.Database.Repositories
         }
         public async Task<(IEnumerable<Publisher> publishers, int totalCount)> GetPublishersAsync(int? pageNumber = null, int? pageSize = null)
         {
-            IQueryable<Publisher> query = GetRecords();
+            IQueryable<Publisher> query = GetRecords().Include(p => p.Games);
             var totalCount = await query.CountAsync();
             if (pageNumber.HasValue && pageSize.HasValue && pageNumber > 0 && pageSize > 0)
             {
@@ -34,6 +34,22 @@ namespace GameLibrary.Database.Repositories
             }
             var publishers = await query.ToListAsync();
             return (publishers, totalCount);
+        }
+
+        public async Task<IEnumerable<Publisher>> GetPublishersAsync(string? name = null, string? sortOrder = "asc")
+        {
+            IQueryable<Publisher> query = GetRecords().Include(p => p.Games);
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(p => p.Name.ToLower().Contains(name.ToLower()));
+            }
+
+            query = sortOrder?.ToLower() == "desc"
+                ? query.OrderByDescending(p => p.Name)
+                : query.OrderBy(p => p.Name);
+
+            return await query.ToListAsync();
         }
     }
 }
