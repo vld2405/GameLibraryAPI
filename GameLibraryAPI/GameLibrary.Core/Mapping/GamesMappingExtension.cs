@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using GameLibrary.Core.Dtos.Common;
 using GameLibrary.Core.Dtos.Requests;
+using GameLibrary.Core.Dtos.Responses;
 using GameLibrary.Database.Entities;
 using System;
 using System.Collections.Generic;
@@ -17,7 +18,6 @@ namespace GameLibrary.Core.Mapping
             Game game = new Game();
             game.Name = gameDto.Name;
             game.Description = gameDto.Description;
-
             game.ReleaseDate = gameDto.ReleaseDate;
 
             return game;
@@ -30,6 +30,22 @@ namespace GameLibrary.Core.Mapping
                 Name = game.Name,
                 Description = game.Description,
                 ReleaseDate = game.ReleaseDate,
+            };
+        }
+        public static GetGamesResponse ToResponseDto(this Game game)
+        {
+            return new GetGamesResponse
+            {
+                Id = game.Id,
+                Name = game.Name,
+                ReleaseDate = game.ReleaseDate,
+                Description = game.Description,
+                CreatedAt = game.CreatedAt,
+                ModifiedAt = game.ModifiedAt,
+                DeletedAt = game.DeletedAt,
+                GenreNames = game.Genres?.Select(g => g.Name).ToList() ?? new List<string>(),
+                DeveloperNames = game.Developers?.Select(d => d.Name).ToList() ?? new List<string>(),
+                PublisherNames = game.Publishers?.Select(p => p.Name).ToList() ?? new List<string>()
             };
         }
     }

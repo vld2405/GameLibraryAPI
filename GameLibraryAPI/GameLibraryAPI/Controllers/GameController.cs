@@ -19,7 +19,7 @@ namespace GameLibrary.Api.Controllers
         [HttpGet("get-games")]
         public async Task<IActionResult> GetGamesAsync()
         {
-            return Ok(await gamesService.GetGamesAsync());
+            return Ok(await gamesService.GetGamesWithInfoAsync());
         }
     }
 }

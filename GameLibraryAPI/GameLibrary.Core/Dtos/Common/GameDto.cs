@@ -13,10 +13,10 @@ namespace GameLibrary.Core.Dtos.Common
         public DateTime ReleaseDate { get; set; }
         public string Description { get; set; }
 
-        public List<UserDto> Users { get; set; }
-        public List<GenreDto> Types { get; set; }
-        public List<DeveloperDto> Developers { get; set; }
-        public List<PublisherDto> Publishers { get; set; }
+        //public List<UserDto> Users { get; set; }
+        public List<int> DeveloperIds { get; set; } = new List<int>();
+        public List<int> PublisherIds { get; set; } = new List<int>();
+        public List<int> GenreIds { get; set; } = new List<int>();
 
     }
 }

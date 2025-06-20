@@ -23,5 +23,12 @@ namespace GameLibrary.Api.Controllers
             var result = await devsService.GetDevsAsync();
             return Ok(result);
         }
+
+        [HttpGet("get-developers-paginated")]
+        public async Task<ActionResult<object>> GetDevelopersPaginatedAsync([FromQuery] int? pageNumber = null, [FromQuery] int? pageSize = null)
+        {
+            var result = await devsService.GetDevsPaginatedAsync(pageNumber, pageSize);
+            return Ok(result);
+        }
     }
 }

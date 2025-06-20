@@ -51,5 +51,11 @@ namespace GameLibrary.Database.Repositories
 
             return await query.ToListAsync();
         }
+
+        public async Task AddPublisherAsync(Publisher entity)
+        {
+            Insert(entity);
+            await SaveChangesAsync();
+        }
     }
 }

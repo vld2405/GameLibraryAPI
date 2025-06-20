@@ -1,4 +1,5 @@
 ﻿using GameLibrary.Core.Dtos.Requests;
+using GameLibrary.Core.Dtos.Responses;
 using GameLibrary.Core.Mapping;
 using GameLibrary.Database.Entities;
 using GameLibrary.Database.Repositories;
@@ -16,12 +17,17 @@ public class GamesService(GameRepository gameRepository)
 
         var newGame = payload.ToEntity();
 
-        gameRepository.Insert(newGame);
-        await gameRepository.SaveChangesAsync();
+        await gameRepository.AddGameAsync(newGame, payload.DeveloperIds, payload.PublisherIds, payload.GenreIds);
     }
 
     public async Task<IEnumerable<Game>> GetGamesAsync()
     {
         return await gameRepository.GetGamesAsync();
+    }
+
+    public async Task<IEnumerable<GetGamesResponse>> GetGamesWithInfoAsync()
+    {
+        var games = await gameRepository.GetGamesWithInfoAsync();
+        return games.Select(g => g.ToResponseDto());
     }
 }
