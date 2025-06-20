@@ -18,4 +18,9 @@ public class DevelopersService(DeveloperRepository devsRepository)
         devsRepository.Insert(newDev);
         await devsRepository.SaveChangesAsync();
     }
+
+    public async Task<IEnumerable<Developer>> GetDevsAsync()
+    {
+        return await devsRepository.GetDevelopersAsync();
+    }
 }
