@@ -20,6 +20,14 @@ namespace GameLibrary.Core.Mapping
             return publisher;
         }
 
+        public static Publisher ToEntity(this UpdatePublisherRequest dto)
+        {
+            var publisher = new Publisher();
+            if (!string.IsNullOrEmpty(dto.Name))
+                publisher.Name = dto.Name!;
+            return publisher;
+        }
+
         public static PublisherDto ToDto(Publisher publisher)
         {
             return new PublisherDto

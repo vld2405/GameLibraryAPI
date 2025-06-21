@@ -11,7 +11,7 @@ public static class DIConfig
         services.AddScoped<PublisherService>();
         services.AddScoped<GamesService>();
         services.AddScoped<GenresService>();
-        services.AddScoped<UsersService>();
+        services.AddScoped<UserService>();
         services.AddScoped<AuthService>();
 
         return services;

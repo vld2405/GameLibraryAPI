@@ -23,6 +23,18 @@ namespace GameLibrary.Core.Mapping
             return game;
         }
 
+        public static Game ToEntity(this UpdateGameRequest dto)
+        {
+            var game = new Game();
+            if (!string.IsNullOrEmpty(dto.Name))
+                game.Name = dto.Name!;
+            if (!string.IsNullOrEmpty(dto.Description))
+                game.Description = dto.Description!;
+            if (dto.ReleaseDate.HasValue)
+                game.ReleaseDate = dto.ReleaseDate.Value;
+            return game;
+        }
+
         public static GameDto ToDto(Game game)
         {
             return new GameDto

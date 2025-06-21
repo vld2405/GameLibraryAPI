@@ -16,7 +16,7 @@ namespace GameLibrary.Api.Controllers
         }
         
         [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdatePublisherAsync(int id, [FromBody] AddPublisherRequest payload)
+        public async Task<IActionResult> UpdatePublisherAsync(int id, [FromBody] UpdatePublisherRequest payload)
         {
             await publisherService.UpdatePublisherAsync(id, payload);
             return Ok("Publisher updated successfully");
