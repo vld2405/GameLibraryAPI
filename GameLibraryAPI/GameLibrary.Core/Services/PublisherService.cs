@@ -31,6 +31,12 @@ public class PublisherService(PublisherRepository publisherRepository)
         return (result.Select(p => p.ToResponseDto()).ToList(), total);
     }
 
+    public async Task<IEnumerable<GetPublisherResponse>> GetPublishersFilteredAsync(string? name = null, string? sortOrder = "asc")
+    {
+        var result = await publisherRepository.GetPublishersFilteredAsync(name, sortOrder);
+        return result.Select(p => p.ToResponseDto()).ToList();
+    }
+
     public async Task<GetPublisherResponse?> GetPublisherFromIdAsync(int id)
     {
         var result = await publisherRepository.GetPublisherByIdAsync(id);

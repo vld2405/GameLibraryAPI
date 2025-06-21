@@ -35,6 +35,12 @@ public class DevelopersService(DeveloperRepository devsRepository)
         var result = await devsRepository.GetDeveloperByIdAsync(id);
         return result?.ToResponseDto();
     }
+    
+    public async Task<IEnumerable<GetDeveloperResponse>> GetDeveloperFilteredAsync(string? name = null, string? sortOrder = "asc")
+    {
+        var result = await devsRepository.GetDevelopersFilteredAsync(name, sortOrder);
+        return result.Select(d => d.ToResponseDto()).ToList();
+    }
 
     public async Task SoftDeleteDeveloperAsync(int id)
     {

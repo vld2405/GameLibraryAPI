@@ -35,6 +35,13 @@ namespace GameLibrary.Api.Controllers
             });
         }
 
+        [HttpGet("get-developers-filtered")]
+        public async Task<IActionResult> GetDeveloperFilteredAsync([FromQuery] string? name = null, [FromQuery] string? sortOrder = "asc")
+        {
+            var result = await devsService.GetDeveloperFilteredAsync(name, sortOrder);
+            return Ok(result);
+        }
+
         [HttpGet("get-developers-by-{id}")]
         public async Task<IActionResult> GetDeveloperFromIdAsync(int id)
         {
