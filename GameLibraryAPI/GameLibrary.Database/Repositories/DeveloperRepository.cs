@@ -16,12 +16,12 @@ namespace GameLibrary.Database.Repositories
 
         public async Task<Developer?> GetDeveloperByIdAsync(int id)
         {
-            return await GetRecords().FirstOrDefaultAsync(d => d.Id == id);
+            return await GetRecords().Include(d => d.Games).FirstOrDefaultAsync(d => d.Id == id);
         }
 
         public async Task<IEnumerable<Developer>> GetDevelopersAsync()
         {
-            return await GetRecords().ToListAsync();
+            return await GetRecords().Include(d => d.Games).ToListAsync();
         }
 
         public async Task<(IEnumerable<Developer> Developers, int TotalCount)> GetDevelopersAsync(int pageNumber = 1, int pageSize = 10)

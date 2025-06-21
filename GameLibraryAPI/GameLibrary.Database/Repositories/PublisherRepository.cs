@@ -16,11 +16,11 @@ namespace GameLibrary.Database.Repositories
         }
         public async Task<Publisher?> GetPublisherByIdAsync(int id)
         {
-            return await GetRecords().FirstOrDefaultAsync(p => p.Id == id);
+            return await GetRecords().Include(p => p.Games).FirstOrDefaultAsync(p => p.Id == id);
         }
         public async Task<IEnumerable<Publisher>> GetPublishersAsync()
         {
-            return await GetRecords().ToListAsync();
+            return await GetRecords().Include(p => p.Games).ToListAsync();
         }
         public async Task<(IEnumerable<Publisher> publishers, int totalCount)> GetPublishersAsync(int? pageNumber = null, int? pageSize = null)
         {

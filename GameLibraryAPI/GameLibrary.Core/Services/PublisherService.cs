@@ -19,9 +19,10 @@ public class PublisherService(PublisherRepository publisherRepository)
         await publisherRepository.AddPublisherAsync(newPublisher);
     }
 
-    public async Task<IEnumerable<Publisher>> GetPublishersAsync()
+    public async Task<IEnumerable<GetPublisherResponse>> GetPublishersAsync()
     {
-        return await publisherRepository.GetPublishersAsync();
+        var result = await publisherRepository.GetPublishersAsync();
+        return result.Select(p => p.ToResponseDto()).ToList();
     }
 
     public async Task<(IEnumerable<GetPublisherResponse> Publishers, int TotalCount)> GetPublishersPaginatedAsync(int pageNumber = 1, int pageSize = 10)
@@ -30,9 +31,10 @@ public class PublisherService(PublisherRepository publisherRepository)
         return (result.Select(p => p.ToResponseDto()).ToList(), total);
     }
 
-    public async Task<Publisher?> GetPublisherFromIdAsync(int id)
+    public async Task<GetPublisherResponse?> GetPublisherFromIdAsync(int id)
     {
-        return await publisherRepository.GetPublisherByIdAsync(id);
+        var result = await publisherRepository.GetPublisherByIdAsync(id);
+        return result?.ToResponseDto();
     }
 
     public async Task SoftDeletePublisherAsync(int id)

@@ -19,9 +19,10 @@ public class GenresService(GenreRepository genreRepository)
         await genreRepository.AddGenreAsync(newGenre);
     }
 
-    public async Task<IEnumerable<Genre>> GetGenresAsync()
+    public async Task<IEnumerable<GetGenreResponse>> GetGenresAsync()
     {
-        return await genreRepository.GetGenresAsync();
+        var result = await genreRepository.GetGenresAsync();
+        return result.Select(g => g.ToResponseDto()).ToList();
     }
 
     public async Task<(IEnumerable<GetGenreResponse> Genres, int TotalCount)> GetGenresPaginatedAsync(int pageNumber = 1, int pageSize = 10)
@@ -30,9 +31,10 @@ public class GenresService(GenreRepository genreRepository)
         return (result.Select(g => g.ToResponseDto()).ToList(), total);
     }
 
-    public async Task<Genre?> GetGenreFromIdAsync(int id)
+    public async Task<GetGenreResponse?> GetGenreFromIdAsync(int id)
     {
-        return await genreRepository.GetGenreByIdAsync(id);
+        var result = await genreRepository.GetGenreByIdAsync(id);
+        return result?.ToResponseDto();
     }
 
     public async Task SoftDeleteGenreAsync(int id)
