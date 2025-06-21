@@ -16,11 +16,11 @@ namespace GameLibrary.Database.Repositories
         }
         public async Task<Genre?> GetGenreByIdAsync(int id)
         {
-            return await GetRecords().FirstOrDefaultAsync(g => g.Id == id);
+            return await GetRecords().Include(g => g.Games).FirstOrDefaultAsync(g => g.Id == id);
         }
         public async Task<IEnumerable<Genre>> GetGenresAsync()
         {
-            return await GetRecords().ToListAsync();
+            return await GetRecords().Include(g => g.Games).ToListAsync();
         }
         public async Task<(IEnumerable<Genre> Genres, int TotalCount)> GetGenresAsync(int pageNumber = 1, int pageSize = 10)
         {

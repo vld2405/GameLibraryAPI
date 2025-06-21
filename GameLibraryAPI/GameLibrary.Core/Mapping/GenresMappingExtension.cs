@@ -31,6 +31,7 @@ namespace GameLibrary.Core.Mapping
         {
             return new GetGenreResponse
             {
+                Id = genre.Id,
                 Name = genre.Name,
                 GamesNames = genre.Games?.Select(g => g.Name).ToList() ?? new List<string>(),
                 CreatedAt = genre.CreatedAt,

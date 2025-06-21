@@ -27,6 +27,7 @@ namespace GameLibrary.Core.Mapping
         {
             return new GetDeveloperResponse
             {
+                Id = developer.Id,
                 Name = developer.Name,
                 GamesNames = developer.Games?.Select(g => g.Name).ToList() ?? new List<string>(),
                 CreatedAt = developer.CreatedAt,

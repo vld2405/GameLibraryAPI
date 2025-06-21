@@ -32,6 +32,7 @@ namespace GameLibrary.Core.Mapping
         {
             return new GetPublisherResponse
             {
+                Id = publisher.Id,
                 Name = publisher.Name,
                 GamesNames = publisher.Games?.Select(g => g.Name).ToList() ?? new List<string>(),
                 CreatedAt = publisher.CreatedAt,

@@ -18,7 +18,11 @@ namespace GameLibrary.Database.Repositories
 
         public async Task<Game?> GetGamesByIdAsync(int id)
         {
-            return await GetRecords().FirstOrDefaultAsync(g => g.Id == id);
+            return await GetRecords()
+                .Include(g => g.Developers)
+                .Include(g => g.Publishers)
+                .Include(g => g.Genres)
+                .FirstOrDefaultAsync(g => g.Id == id);
         }
 
         public async Task<IEnumerable<Game>> GetGamesWithInfoAsync()

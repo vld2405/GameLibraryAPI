@@ -18,9 +18,10 @@ public class DevelopersService(DeveloperRepository devsRepository)
         await devsRepository.AddDevAsync(newDev);
     }
 
-    public async Task<IEnumerable<Developer>> GetDevsAsync()
+    public async Task<IEnumerable<GetDeveloperResponse>> GetDevsAsync()
     {
-        return await devsRepository.GetDevelopersAsync();
+        var result = await devsRepository.GetDevelopersAsync();
+        return result.Select(d => d.ToResponseDto()).ToList();
     }
 
     public async Task<(IEnumerable<GetDeveloperResponse> Developers, int TotalCount)> GetDevsPaginatedAsync(int pageNumber = 1, int pageSize = 10)
@@ -29,9 +30,10 @@ public class DevelopersService(DeveloperRepository devsRepository)
         return (result.Select(d => d.ToResponseDto()).ToList(), total);
     }
 
-    public async Task<Developer?> GetDeveloperFromIdAsync(int id)
+    public async Task<GetDeveloperResponse?> GetDeveloperFromIdAsync(int id)
     {
-        return await devsRepository.GetDeveloperByIdAsync(id);
+        var result = await devsRepository.GetDeveloperByIdAsync(id);
+        return result?.ToResponseDto();
     }
 
     public async Task SoftDeleteDeveloperAsync(int id)

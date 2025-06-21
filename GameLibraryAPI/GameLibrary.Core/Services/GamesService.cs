@@ -37,9 +37,10 @@ public class GamesService(GameRepository gameRepository)
         return (result.Select(g => g.ToResponseDto()).ToList(), total);
     }
 
-    public async Task<Game?> GetGameFromIdAsync(int id)
+    public async Task<GetGamesResponse?> GetGameFromIdAsync(int id)
     {
-        return await gameRepository.GetGamesByIdAsync(id);
+        var result = await gameRepository.GetGamesByIdAsync(id);
+        return result?.ToResponseDto();
     }
 
     public async Task SoftDeleteGameAsync(int id)
