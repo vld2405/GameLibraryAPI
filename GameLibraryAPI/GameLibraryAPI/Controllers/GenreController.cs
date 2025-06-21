@@ -16,6 +16,15 @@ namespace GameLibrary.Api.Controllers
             return Ok("Genre added successfully!");
         }
 
+        
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateGenreAsync(int id, [FromBody] AddGenreRequest payload)
+        {
+            await genresService.UpdateGenreAsync(id, payload);
+            return Ok("Genre updated successfully");
+        }
+
+
         [HttpGet("get-genres")]
         public async Task<IActionResult> GetGenresAsync()
         {

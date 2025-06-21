@@ -75,5 +75,25 @@ namespace GameLibrary.Database.Repositories
             await SaveChangesAsync();
         }
 
+
+        public async Task UpdateDeveloperAsync(int id, Developer updatedEntity)
+        {
+            var currentDeveloper = await GetDeveloperByIdAsync(id);
+
+            if (currentDeveloper == null)
+            {
+                //Middleware
+                //throw new NotFoundException(id);
+                throw new KeyNotFoundException();
+            }
+
+            if (!string.IsNullOrEmpty(updatedEntity.Name))
+            {
+                currentDeveloper.Name = updatedEntity.Name;
+            }
+
+            Update(currentDeveloper);
+            await SaveChangesAsync();
+        }
     }
 }
