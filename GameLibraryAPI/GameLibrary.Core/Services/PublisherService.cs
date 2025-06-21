@@ -32,7 +32,7 @@ public class PublisherService(PublisherRepository publisherRepository)
 
     public async Task<Publisher?> GetPublisherFromIdAsync(int id)
     {
-        return await publisherRepository.GetPublisherAsync(id);
+        return await publisherRepository.GetPublisherByIdAsync(id);
     }
 
     public async Task SoftDeletePublisherAsync(int id)

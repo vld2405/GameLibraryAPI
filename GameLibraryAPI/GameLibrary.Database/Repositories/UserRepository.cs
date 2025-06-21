@@ -14,7 +14,7 @@ namespace GameLibrary.Database.Repositories
         public UserRepository(GameLibraryDatabaseContext dbContext) : base(dbContext)
         {
         }
-        public async Task<User?> GetUserAsync(int id)
+        public async Task<User?> GetUserByIdAsync(int id)
         {
             return await GetRecords().FirstOrDefaultAsync(u => u.Id == id);
         }

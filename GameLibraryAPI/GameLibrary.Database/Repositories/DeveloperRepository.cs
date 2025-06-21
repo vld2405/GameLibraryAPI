@@ -14,7 +14,7 @@ namespace GameLibrary.Database.Repositories
         public DeveloperRepository(GameLibraryDatabaseContext dbContext) : base(dbContext)
         {}
 
-        public async Task<Developer?> GetDevelopersAsync(int id)
+        public async Task<Developer?> GetDeveloperByIdAsync(int id)
         {
             return await GetRecords().FirstOrDefaultAsync(d => d.Id == id);
         }

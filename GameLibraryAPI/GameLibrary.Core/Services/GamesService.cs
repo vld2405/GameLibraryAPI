@@ -30,4 +30,20 @@ public class GamesService(GameRepository gameRepository)
         var games = await gameRepository.GetGamesWithInfoAsync();
         return games.Select(g => g.ToResponseDto());
     }
+
+    public async Task<(IEnumerable<GetGamesResponse> Games, int TotalCount)> GetGamesPaginatedAsync(int pageNumber = 1, int pageSize = 10)
+    {
+        var (result, total) = await gameRepository.GetGamesAsync(pageNumber, pageSize);
+        return (result.Select(g => g.ToResponseDto()).ToList(), total);
+    }
+
+    public async Task<Game?> GetGameFromIdAsync(int id)
+    {
+        return await gameRepository.GetGamesByIdAsync(id);
+    }
+
+    public async Task SoftDeleteGameAsync(int id)
+    {
+        await gameRepository.SoftDeleteGameAsync(id);
+    }
 }

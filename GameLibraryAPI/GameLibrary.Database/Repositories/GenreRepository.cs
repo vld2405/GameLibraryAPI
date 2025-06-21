@@ -14,7 +14,7 @@ namespace GameLibrary.Database.Repositories
         public GenreRepository(GameLibraryDatabaseContext dbContext) : base(dbContext)
         {
         }
-        public async Task<Genre?> GetGenresAsync(int id)
+        public async Task<Genre?> GetGenreByIdAsync(int id)
         {
             return await GetRecords().FirstOrDefaultAsync(g => g.Id == id);
         }

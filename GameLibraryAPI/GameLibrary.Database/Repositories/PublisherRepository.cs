@@ -14,7 +14,7 @@ namespace GameLibrary.Database.Repositories
         public PublisherRepository(GameLibraryDatabaseContext dbContext) : base(dbContext)
         {
         }
-        public async Task<Publisher?> GetPublisherAsync(int id)
+        public async Task<Publisher?> GetPublisherByIdAsync(int id)
         {
             return await GetRecords().FirstOrDefaultAsync(p => p.Id == id);
         }

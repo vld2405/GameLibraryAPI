@@ -32,7 +32,7 @@ public class GenresService(GenreRepository genreRepository)
 
     public async Task<Genre?> GetGenreFromIdAsync(int id)
     {
-        return await genreRepository.GetGenresAsync(id);
+        return await genreRepository.GetGenreByIdAsync(id);
     }
 
     public async Task SoftDeleteGenreAsync(int id)
