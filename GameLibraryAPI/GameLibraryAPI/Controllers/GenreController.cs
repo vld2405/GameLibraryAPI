@@ -1,13 +1,14 @@
 ﻿using GameLibrary.Core.Dtos.Requests;
 using GameLibrary.Core.Mapping;
 using GameLibrary.Core.Services;
+using GameLibrary.Infrastructure.Base;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameLibrary.Api.Controllers
 {
     [ApiController]
     [Route("genre")]
-    public class GenreController(GenresService genresService) : ControllerBase
+    public class GenreController(GenresService genresService) : CustomControllerBase
     {
         [HttpPost("add-genre")]
         public async Task<IActionResult> AddGenreAsync(AddGenreRequest payload)

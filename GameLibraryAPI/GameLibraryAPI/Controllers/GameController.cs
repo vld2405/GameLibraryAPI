@@ -1,12 +1,13 @@
 ﻿using GameLibrary.Core.Dtos.Requests;
 using GameLibrary.Core.Services;
+using GameLibrary.Infrastructure.Base;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameLibrary.Api.Controllers
 {
     [ApiController]
     [Route("game")]
-    public class GameController(GamesService gamesService) : ControllerBase
+    public class GameController(GamesService gamesService) : CustomControllerBase
     {
         [HttpPost("add-game")]
         public async Task<IActionResult> AddGameAsync(AddGameRequest payload)
