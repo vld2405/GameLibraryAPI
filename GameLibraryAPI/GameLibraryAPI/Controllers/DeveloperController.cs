@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authorization;
 using GameLibrary.Core.Dtos.Requests;
 using GameLibrary.Core.Services;
+using GameLibrary.Infrastructure.Base;
 
 namespace GameLibrary.Api.Controllers
 {
@@ -9,12 +10,11 @@ namespace GameLibrary.Api.Controllers
     // !!!!!! jocurile soft deleted apar in alte tabele !!!!!
     // TODO: MIDDLEWARE
     // TODO: GAMES trebuie sa aiba si getter filtrat
-    // TODO: AUTENTIFICARE
-    // TODO: USER
     
     [ApiController]
     [Route("developer")]
-    public class DeveloperController(DevelopersService devsService) : ControllerBase
+    [Authorize]
+    public class DeveloperController(DevelopersService devsService) : CustomControllerBase
     {
         [HttpPost("add-developer")]
         public async Task<IActionResult> AddDeveloperAsync([FromBody] AddDeveloperRequest payload)
