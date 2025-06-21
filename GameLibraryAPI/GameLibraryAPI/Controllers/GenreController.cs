@@ -33,12 +33,22 @@ namespace GameLibrary.Api.Controllers
             });
         }
 
+
+        [HttpGet("get-genres-filtered")]
+        public async Task<IActionResult> GetGenresFilteredAsync([FromQuery] string? name = null, [FromQuery] string? sortOrder = "asc")
+        {
+            var result = await genresService.GetGenresFilteredAsync(name, sortOrder);
+            return Ok(result);
+        }
+
+
         [HttpGet("get-genres-by-{id}")]
         public async Task<IActionResult> GetGenreFromIdAsync(int id)
         {
             var result = await genresService.GetGenreFromIdAsync(id);
             return Ok(result);
         }
+
 
         [HttpDelete("soft-delete/{id}")]
         public async Task<IActionResult> SoftDeleteGenreAsync(int id)

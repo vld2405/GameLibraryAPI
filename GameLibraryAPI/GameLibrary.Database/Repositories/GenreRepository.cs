@@ -41,7 +41,7 @@ namespace GameLibrary.Database.Repositories
             return (items, totalCount);
         }
 
-        public async Task<IEnumerable<Genre>> GetGenresAsync(string? name = null, string? sortOrder = "asc")
+        public async Task<IEnumerable<Genre>> GetGenresFilteredAsync(string? name = null, string? sortOrder = "asc")
         {
             IQueryable<Genre> query = GetRecords().Include(g => g.Games);
 

@@ -36,7 +36,7 @@ namespace GameLibrary.Database.Repositories
             return (publishers, totalCount);
         }
 
-        public async Task<IEnumerable<Publisher>> GetPublishersAsync(string? name = null, string? sortOrder = "asc")
+        public async Task<IEnumerable<Publisher>> GetPublishersFilteredAsync(string? name = null, string? sortOrder = "asc")
         {
             IQueryable<Publisher> query = GetRecords().Include(p => p.Games);
 

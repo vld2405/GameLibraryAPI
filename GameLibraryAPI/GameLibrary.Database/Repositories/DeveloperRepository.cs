@@ -43,9 +43,9 @@ namespace GameLibrary.Database.Repositories
             return (items, totalCount);
         }
 
-        public async Task<IEnumerable<Developer>> GetDevelopersAsync(string? name = null, string? sortOrder = "asc")
+        public async Task<IEnumerable<Developer>> GetDevelopersFilteredAsync(string? name = null, string? sortOrder = "asc")
         {
-            IQueryable<Developer> query = GetRecords().Include(d=>d.Games);
+            IQueryable<Developer> query = GetRecords();
 
             if (!string.IsNullOrEmpty(name))
             {
@@ -56,7 +56,7 @@ namespace GameLibrary.Database.Repositories
                 ? query.OrderByDescending(d => d.Name)
                 : query.OrderBy(d => d.Name);
 
-            return await query.ToListAsync();
+            return await query.Include(d => d.Games).ToListAsync();
         }
 
         public async Task AddDevAsync(Developer entity)

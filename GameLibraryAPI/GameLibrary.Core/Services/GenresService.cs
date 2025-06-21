@@ -31,6 +31,12 @@ public class GenresService(GenreRepository genreRepository)
         return (result.Select(g => g.ToResponseDto()).ToList(), total);
     }
 
+    public async Task<IEnumerable<GetGenreResponse>> GetGenresFilteredAsync(string? name = null, string? sortOrder = "asc")
+    {
+        var result = await genreRepository.GetGenresFilteredAsync(name, sortOrder);
+        return result.Select(g => g.ToResponseDto()).ToList();
+    }
+
     public async Task<GetGenreResponse?> GetGenreFromIdAsync(int id)
     {
         var result = await genreRepository.GetGenreByIdAsync(id);
