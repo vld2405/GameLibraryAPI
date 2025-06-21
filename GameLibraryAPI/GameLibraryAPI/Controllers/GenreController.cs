@@ -2,12 +2,14 @@
 using GameLibrary.Core.Mapping;
 using GameLibrary.Core.Services;
 using GameLibrary.Infrastructure.Base;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameLibrary.Api.Controllers
 {
     [ApiController]
     [Route("genre")]
+    [Authorize]
     public class GenreController(GenresService genresService) : CustomControllerBase
     {
         [HttpPost("add-genre")]

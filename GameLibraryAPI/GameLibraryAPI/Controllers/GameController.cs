@@ -1,12 +1,14 @@
 ﻿using GameLibrary.Core.Dtos.Requests;
 using GameLibrary.Core.Services;
 using GameLibrary.Infrastructure.Base;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameLibrary.Api.Controllers
 {
     [ApiController]
     [Route("game")]
+    [Authorize]
     public class GameController(GamesService gamesService) : CustomControllerBase
     {
         [HttpPost("add-game")]

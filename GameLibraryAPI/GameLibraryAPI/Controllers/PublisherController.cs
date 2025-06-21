@@ -1,12 +1,14 @@
 ﻿using GameLibrary.Core.Dtos.Requests;
 using GameLibrary.Core.Services;
 using GameLibrary.Infrastructure.Base;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace GameLibrary.Api.Controllers
 {
     [ApiController]
     [Route("publisher")]
+    [Authorize]
     public class PublisherController(PublisherService publisherService) : CustomControllerBase
     {
         [HttpPost("add-publisher")]
