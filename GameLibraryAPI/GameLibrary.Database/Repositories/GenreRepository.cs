@@ -12,8 +12,8 @@ namespace GameLibrary.Database.Repositories
     public class GenreRepository : BaseRepository<Genre>
     {
         public GenreRepository(GameLibraryDatabaseContext dbContext) : base(dbContext)
-        {
-        }
+        {}
+
         public async Task<Genre?> GetGenreByIdAsync(int id)
         {
             return await GetRecords().Include(g => g.Games).FirstOrDefaultAsync(g => g.Id == id);

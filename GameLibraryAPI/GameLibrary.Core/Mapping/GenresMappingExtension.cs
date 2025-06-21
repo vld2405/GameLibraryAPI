@@ -20,6 +20,14 @@ namespace GameLibrary.Core.Mapping
             return genre;
         }
 
+        public static Genre ToEntity(this UpdateGenreRequest dto)
+        {
+            var genre = new Genre();
+            if (!string.IsNullOrEmpty(dto.Name))
+                genre.Name = dto.Name!;
+            return genre;
+        }
+
         public static GenreDto ToDto(Genre genre)
         {
             return new GenreDto

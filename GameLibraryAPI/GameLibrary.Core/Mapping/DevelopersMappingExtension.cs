@@ -20,8 +20,16 @@ namespace GameLibrary.Core.Mapping
             developer.Name = developerDto.Name;
 
             return developer;
-
         }
+
+        public static Developer ToEntity(this UpdateDeveloperRequest dto)
+        {
+            var dev = new Developer();
+            if (!string.IsNullOrEmpty(dto.Name))
+                dev.Name = dto.Name!;
+            return dev;
+        }
+
 
         public static GetDeveloperResponse ToResponseDto(this Developer developer)
         {

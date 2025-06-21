@@ -17,7 +17,7 @@ public class DevelopersService(DeveloperRepository devsRepository)
 
         await devsRepository.AddDevAsync(newDev);
     }
-    public async Task UpdateDeveloperAsync(int id, AddDeveloperRequest payload)
+    public async Task UpdateDeveloperAsync(int id, UpdateDeveloperRequest payload)
     {
         if (payload == null)
             throw new ArgumentNullException(nameof(payload));

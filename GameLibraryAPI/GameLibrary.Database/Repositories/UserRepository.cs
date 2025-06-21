@@ -79,6 +79,25 @@ namespace GameLibrary.Database.Repositories
             return await query.ToListAsync();
         }
 
+        public async Task AddUserAsync(User entity)
+        {
+            Insert(entity);
+            await SaveChangesAsync();
+        }
 
+        public async Task<User> GetByEmailAsync(string email)
+        {
+            var result = _databaseContext.Users
+
+                .Where(e => e.Email == email)
+                .Where(e => e.DeletedAt == null)
+
+                .FirstOrDefault();
+
+            //if (result == null)
+                //throw new ResourceMissingException("User not found");
+
+            return result;
+        }
     }
 }

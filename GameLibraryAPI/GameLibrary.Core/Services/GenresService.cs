@@ -6,7 +6,6 @@ using GameLibrary.Database.Repositories;
 
 namespace GameLibrary.Core.Services;
 
-// TODO: GenresService
 public class GenresService(GenreRepository genreRepository)
 {
     public async Task AddGenreAsync(AddGenreRequest payload)
@@ -19,7 +18,7 @@ public class GenresService(GenreRepository genreRepository)
         await genreRepository.AddGenreAsync(newGenre);
     }
 
-    public async Task UpdateGenreAsync(int id, AddGenreRequest payload)
+    public async Task UpdateGenreAsync(int id, UpdateGenreRequest payload)
     {
         if (payload == null)
             throw new ArgumentNullException(nameof(payload));

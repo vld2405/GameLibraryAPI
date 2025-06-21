@@ -16,11 +16,20 @@ namespace GameLibrary.Api.Controllers
         }
 
 
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateGameAsync(int id, [FromBody] UpdateGameRequest payload)
+        {
+            await gamesService.UpdateGameAsync(id, payload);
+            return Ok("Game updated successfully");
+        }
+
+
         [HttpGet("get-games")]
         public async Task<IActionResult> GetGamesAsync()
         {
             return Ok(await gamesService.GetGamesWithInfoAsync());
         }
+
 
         [HttpGet("get-games-paginated")]
         public async Task<IActionResult> GetGamesPaginatedAsync([FromQuery] int pageNumber, [FromQuery] int pageSize)

@@ -1,6 +1,7 @@
 ﻿using GameLibrary.Database.Context;
 using GameLibrary.Database.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,7 +17,7 @@ namespace GameLibrary.Database.Repositories
         {
         }
 
-        public async Task<Game?> GetGamesByIdAsync(int id)
+        public async Task<Game?> GetGameByIdAsync(int id)
         {
             return await GetRecords()
                 .Include(g => g.Developers)
@@ -155,9 +156,60 @@ namespace GameLibrary.Database.Repositories
         {
             var game = await GetFirstOrDefaultAsync(id);
             if (game == null)
-                throw new KeyNotFoundException($"Developer with ID {id} not found.");
+                throw new KeyNotFoundException($"Game with ID {id} not found.");
 
             SoftDelete(game);
+            await SaveChangesAsync();
+        }
+
+        public async Task UpdateGameAsync(int id, Game updatedEntity, List<int>? devIds, List<int>? pubIds, List<int>? genIds)
+        {
+            var currentGame= await GetGameByIdAsync(id);
+
+            if (currentGame == null)
+            {
+                //Middleware
+                //throw new NotFoundException(id);
+                throw new KeyNotFoundException();
+            }
+
+            if (!string.IsNullOrEmpty(updatedEntity.Name))
+            {
+                currentGame.Name = updatedEntity.Name;
+            }
+
+            if (updatedEntity.ReleaseDate != default(DateTime))
+            { 
+                currentGame.ReleaseDate = updatedEntity.ReleaseDate; 
+            }
+
+            if (!string.IsNullOrEmpty(updatedEntity.Description))
+            {
+                currentGame.Description = updatedEntity.Description;
+            }
+
+            if(devIds != null)
+            {
+                currentGame.Developers = await GetAllDevsAsync(devIds);
+            }
+
+            if (pubIds != null)
+            {
+                currentGame.Publishers = await GetAllPublishersAsync(pubIds);
+            }
+
+            if (genIds != null)
+            {
+                currentGame.Genres = await GetAllGenresAsync(genIds);
+            }
+
+            // TODO: SI AICI E PROBLEMA CA NU AM PASAT USERII IN FUNCTIE !!!
+            if (updatedEntity.Users != null && updatedEntity.Users.Count > 0)
+            {
+                currentGame.Users = updatedEntity.Users;
+            }
+
+            Update(currentGame);
             await SaveChangesAsync();
         }
     }

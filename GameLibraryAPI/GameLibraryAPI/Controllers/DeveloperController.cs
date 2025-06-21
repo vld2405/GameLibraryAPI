@@ -8,7 +8,7 @@ namespace GameLibrary.Api.Controllers
 
     // !!!!!! jocurile soft deleted apar in alte tabele !!!!!
     // TODO: MIDDLEWARE
-    // TODO: PATCH pt restul
+    // TODO: GAMES trebuie sa aiba si getter filtrat
     // TODO: AUTENTIFICARE
     // TODO: USER
     
@@ -25,7 +25,7 @@ namespace GameLibrary.Api.Controllers
 
 
         [HttpPatch("{id}")]
-        public async Task<IActionResult> UpdateDeveloperAsync(int id, [FromBody] AddDeveloperRequest payload)
+        public async Task<IActionResult> UpdateDeveloperAsync(int id, [FromBody] UpdateDeveloperRequest payload)
         {
             await devsService.UpdateDeveloperAsync(id, payload);
             return Ok("Developer updated successfully");

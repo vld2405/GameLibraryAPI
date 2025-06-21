@@ -4,16 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameLibrary.Database.Entities
+namespace GameLibrary.Core.Dtos.Requests
 {
-    public class User : BaseEntity
+    public class RegisterRequest
     {
         public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        public string PasswordSalt { get; set; }
-        public bool IsAdmin { get; set; }
-
-        public List<Game> Games { get; set; }
     }
 }

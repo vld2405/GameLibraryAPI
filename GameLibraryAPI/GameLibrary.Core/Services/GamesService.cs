@@ -7,7 +7,6 @@ using System.ComponentModel;
 
 namespace GameLibrary.Core.Services;
 
-// TODO: GamesService
 public class GamesService(GameRepository gameRepository)
 {
     public async Task AddGameAsync(AddGameRequest payload)
@@ -18,6 +17,16 @@ public class GamesService(GameRepository gameRepository)
         var newGame = payload.ToEntity();
 
         await gameRepository.AddGameAsync(newGame, payload.DeveloperIds, payload.PublisherIds, payload.GenreIds);
+    }
+
+    public async Task UpdateGameAsync(int id, UpdateGameRequest payload)
+    {
+        if (payload == null)
+            throw new ArgumentNullException(nameof(payload));
+
+        var updatedEntity = payload.ToEntity();
+
+        await gameRepository.UpdateGameAsync(id, updatedEntity, payload.DeveloperIds, payload.PublisherIds, payload.GenreIds);
     }
 
     public async Task<IEnumerable<Game>> GetGamesAsync()
@@ -39,7 +48,7 @@ public class GamesService(GameRepository gameRepository)
 
     public async Task<GetGamesResponse?> GetGameFromIdAsync(int id)
     {
-        var result = await gameRepository.GetGamesByIdAsync(id);
+        var result = await gameRepository.GetGameByIdAsync(id);
         return result?.ToResponseDto();
     }
 

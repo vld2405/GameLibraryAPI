@@ -6,7 +6,6 @@ using GameLibrary.Database.Repositories;
 
 namespace GameLibrary.Core.Services;
 
-// TODO: PublisherService
 public class PublisherService(PublisherRepository publisherRepository)
 {
     public async Task AddPublisherAsync(AddPublisherRequest payload)
@@ -18,7 +17,7 @@ public class PublisherService(PublisherRepository publisherRepository)
 
         await publisherRepository.AddPublisherAsync(newPublisher);
     }
-    public async Task UpdatePublisherAsync(int id, AddPublisherRequest payload)
+    public async Task UpdatePublisherAsync(int id, UpdatePublisherRequest payload)
     {
         if (payload == null)
             throw new ArgumentNullException(nameof(payload));
