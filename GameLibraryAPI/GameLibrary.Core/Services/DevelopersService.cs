@@ -31,7 +31,7 @@ public class DevelopersService(DeveloperRepository devsRepository)
 
     public async Task<Developer?> GetDeveloperFromIdAsync(int id)
     {
-        return await devsRepository.GetDevelopersAsync(id);
+        return await devsRepository.GetDeveloperByIdAsync(id);
     }
 
     public async Task SoftDeleteDeveloperAsync(int id)

@@ -16,7 +16,7 @@ namespace GameLibrary.Database.Repositories
         {
         }
 
-        public async Task<Game?> GetGameAsync(int id)
+        public async Task<Game?> GetGamesByIdAsync(int id)
         {
             return await GetRecords().FirstOrDefaultAsync(g => g.Id == id);
         }
@@ -147,5 +147,14 @@ namespace GameLibrary.Database.Repositories
             await SaveChangesAsync();
         }
 
+        public async Task SoftDeleteGameAsync(int id)
+        {
+            var game = await GetFirstOrDefaultAsync(id);
+            if (game == null)
+                throw new KeyNotFoundException($"Developer with ID {id} not found.");
+
+            SoftDelete(game);
+            await SaveChangesAsync();
+        }
     }
 }
