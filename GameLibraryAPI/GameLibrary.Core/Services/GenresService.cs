@@ -19,6 +19,16 @@ public class GenresService(GenreRepository genreRepository)
         await genreRepository.AddGenreAsync(newGenre);
     }
 
+    public async Task UpdateGenreAsync(int id, AddGenreRequest payload)
+    {
+        if (payload == null)
+            throw new ArgumentNullException(nameof(payload));
+
+        var updatedEntity = payload.ToEntity();
+
+        await genreRepository.UpdateGenreAsync(id, updatedEntity);
+    }
+
     public async Task<IEnumerable<GetGenreResponse>> GetGenresAsync()
     {
         var result = await genreRepository.GetGenresAsync();

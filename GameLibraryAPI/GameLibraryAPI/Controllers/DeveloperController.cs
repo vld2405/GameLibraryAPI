@@ -5,6 +5,13 @@ using GameLibrary.Core.Services;
 
 namespace GameLibrary.Api.Controllers
 {
+
+    // !!!!!! jocurile soft deleted apar in alte tabele !!!!!
+    // TODO: MIDDLEWARE
+    // TODO: PATCH pt restul
+    // TODO: AUTENTIFICARE
+    // TODO: USER
+    
     [ApiController]
     [Route("developer")]
     public class DeveloperController(DevelopersService devsService) : ControllerBase
@@ -14,6 +21,14 @@ namespace GameLibrary.Api.Controllers
         {
             await devsService.AddDevAsync(payload);
             return Ok("Developer added successfully");
+        }
+
+
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdateDeveloperAsync(int id, [FromBody] AddDeveloperRequest payload)
+        {
+            await devsService.UpdateDeveloperAsync(id, payload);
+            return Ok("Developer updated successfully");
         }
 
 

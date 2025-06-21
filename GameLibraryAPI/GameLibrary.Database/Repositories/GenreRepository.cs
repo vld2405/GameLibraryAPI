@@ -72,5 +72,25 @@ namespace GameLibrary.Database.Repositories
             SoftDelete(genre);
             await SaveChangesAsync();
         }
+
+        public async Task UpdateGenreAsync(int id, Genre updatedEntity)
+        {
+            var currentGenre = await GetGenreByIdAsync(id);
+
+            if (currentGenre == null)
+            {
+                //Middleware
+                //throw new NotFoundException(id);
+                throw new KeyNotFoundException();
+            }
+
+            if (!string.IsNullOrEmpty(updatedEntity.Name))
+            {
+                currentGenre.Name = updatedEntity.Name;
+            }
+
+            Update(currentGenre);
+            await SaveChangesAsync();
+        }
     }
 }

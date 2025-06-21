@@ -17,6 +17,15 @@ public class DevelopersService(DeveloperRepository devsRepository)
 
         await devsRepository.AddDevAsync(newDev);
     }
+    public async Task UpdateDeveloperAsync(int id, AddDeveloperRequest payload)
+    {
+        if (payload == null)
+            throw new ArgumentNullException(nameof(payload));
+
+        var updatedEntity = payload.ToEntity();
+
+        await devsRepository.UpdateDeveloperAsync(id, updatedEntity);
+    }
 
     public async Task<IEnumerable<GetDeveloperResponse>> GetDevsAsync()
     {
