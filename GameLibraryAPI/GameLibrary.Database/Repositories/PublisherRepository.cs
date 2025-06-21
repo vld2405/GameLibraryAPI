@@ -1,6 +1,8 @@
-﻿using GameLibrary.Database.Context;
+﻿using Azure.Core;
+using GameLibrary.Database.Context;
 using GameLibrary.Database.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,16 +14,18 @@ namespace GameLibrary.Database.Repositories
     public class PublisherRepository : BaseRepository<Publisher>
     {
         public PublisherRepository(GameLibraryDatabaseContext dbContext) : base(dbContext)
-        {
-        }
+        {}
+
         public async Task<Publisher?> GetPublisherByIdAsync(int id)
         {
             return await GetRecords().Include(p => p.Games).FirstOrDefaultAsync(p => p.Id == id);
         }
+
         public async Task<IEnumerable<Publisher>> GetPublishersAsync()
         {
             return await GetRecords().Include(p => p.Games).ToListAsync();
         }
+
         public async Task<(IEnumerable<Publisher> publishers, int totalCount)> GetPublishersAsync(int? pageNumber = null, int? pageSize = null)
         {
             IQueryable<Publisher> query = GetRecords().Include(p => p.Games);
@@ -65,6 +69,26 @@ namespace GameLibrary.Database.Repositories
                 throw new KeyNotFoundException($"Publisher with ID {id} not found.");
 
             SoftDelete(publisher);
+            await SaveChangesAsync();
+        }
+
+        public async Task UpdatePublisherAsync(int id, Publisher updatedEntity)
+        {
+            var currentPublisher = await GetPublisherByIdAsync(id);
+
+            if (currentPublisher == null)
+            {
+                //Middleware
+                //throw new NotFoundException(id);
+                throw new KeyNotFoundException();
+            }
+
+            if (!string.IsNullOrEmpty(updatedEntity.Name))
+            {
+                currentPublisher.Name = updatedEntity.Name;
+            }
+
+            Update(currentPublisher);
             await SaveChangesAsync();
         }
     }

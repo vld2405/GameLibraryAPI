@@ -14,6 +14,13 @@ namespace GameLibrary.Api.Controllers
             await publisherService.AddPublisherAsync(payload);
             return Ok("Publisher added successfully");
         }
+        
+        [HttpPatch("{id}")]
+        public async Task<IActionResult> UpdatePublisherAsync(int id, [FromBody] AddPublisherRequest payload)
+        {
+            await publisherService.UpdatePublisherAsync(id, payload);
+            return Ok("Publisher updated successfully");
+        }
 
         [HttpGet("get-publishers")]
         public async Task<IActionResult> GetPublishersAsync()

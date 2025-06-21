@@ -18,6 +18,15 @@ public class PublisherService(PublisherRepository publisherRepository)
 
         await publisherRepository.AddPublisherAsync(newPublisher);
     }
+    public async Task UpdatePublisherAsync(int id, AddPublisherRequest payload)
+    {
+        if (payload == null)
+            throw new ArgumentNullException(nameof(payload));
+
+        var updatedEntity = payload.ToEntity();
+
+        await publisherRepository.UpdatePublisherAsync(id, updatedEntity);
+    }
 
     public async Task<IEnumerable<GetPublisherResponse>> GetPublishersAsync()
     {
