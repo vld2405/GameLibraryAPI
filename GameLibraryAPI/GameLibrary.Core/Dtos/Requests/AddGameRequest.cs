@@ -14,5 +14,6 @@ namespace GameLibrary.Core.Dtos.Requests
         public List<int> DeveloperIds { get; set; }
         public List<int> PublisherIds { get; set; }
         public List<int> GenreIds { get; set; }
+        public List<int> UserIds { get; set; }
     }
 }

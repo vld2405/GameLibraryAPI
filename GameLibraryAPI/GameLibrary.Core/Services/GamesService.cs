@@ -16,7 +16,7 @@ public class GamesService(GameRepository gameRepository)
 
         var newGame = payload.ToEntity();
 
-        await gameRepository.AddGameAsync(newGame, payload.DeveloperIds, payload.PublisherIds, payload.GenreIds);
+        await gameRepository.AddGameAsync(newGame, payload.DeveloperIds, payload.PublisherIds, payload.GenreIds, payload.UserIds);
     }
 
     public async Task UpdateGameAsync(int id, UpdateGameRequest payload)
@@ -26,7 +26,7 @@ public class GamesService(GameRepository gameRepository)
 
         var updatedEntity = payload.ToEntity();
 
-        await gameRepository.UpdateGameAsync(id, updatedEntity, payload.DeveloperIds, payload.PublisherIds, payload.GenreIds);
+        await gameRepository.UpdateGameAsync(id, updatedEntity, payload.DeveloperIds, payload.PublisherIds, payload.GenreIds, payload.UserIds);
     }
 
     public async Task<IEnumerable<Game>> GetGamesAsync()

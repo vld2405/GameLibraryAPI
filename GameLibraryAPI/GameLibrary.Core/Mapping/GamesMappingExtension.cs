@@ -55,9 +55,9 @@ namespace GameLibrary.Core.Mapping
                 CreatedAt = game.CreatedAt,
                 ModifiedAt = game.ModifiedAt,
                 DeletedAt = game.DeletedAt,
-                GenreNames = game.Genres?.Select(g => g.Name).ToList() ?? new List<string>(),
-                DeveloperNames = game.Developers?.Select(d => d.Name).ToList() ?? new List<string>(),
-                PublisherNames = game.Publishers?.Select(p => p.Name).ToList() ?? new List<string>()
+                GenreNames = game.Genres?.Where(g => g.DeletedAt == null).Select(g => g.Name).ToList() ?? new List<string>(),
+                DeveloperNames = game.Developers?.Where(d => d.DeletedAt == null).Select(d => d.Name).ToList() ?? new List<string>(),
+                PublisherNames = game.Publishers?.Where(p => p.DeletedAt == null).Select(p => p.Name).ToList() ?? new List<string>(),
             };
         }
     }

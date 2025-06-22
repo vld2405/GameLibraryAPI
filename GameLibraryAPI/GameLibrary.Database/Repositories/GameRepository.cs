@@ -127,27 +127,34 @@ namespace GameLibrary.Database.Repositories
         public async Task<List<Developer>> GetAllDevsAsync(List<int> devIds)
         {
             return await _databaseContext.Developers
-                .Where(d => devIds.Contains(d.Id))
+                .Where(d => devIds.Contains(d.Id) && d.DeletedAt == null)
                 .ToListAsync();
         }
         public async Task<List<Publisher>> GetAllPublishersAsync(List<int> pubIds)
         {
             return await _databaseContext.Publishers
-                .Where(p => pubIds.Contains(p.Id))
+                .Where(p => pubIds.Contains(p.Id) && p.DeletedAt == null)
                 .ToListAsync();
         }
         public async Task<List<Genre>> GetAllGenresAsync(List<int> genIds)
         {
             return await _databaseContext.Genres
-                .Where(g => genIds.Contains(g.Id))
+                .Where(g => genIds.Contains(g.Id) && g.DeletedAt == null)
+                .ToListAsync();
+        }
+        public async Task<List<User>> GetAllUsersAsync(List<int> userIds)
+        {
+            return await _databaseContext.Users
+                .Where(u => userIds.Contains(u.Id) && u.DeletedAt == null)
                 .ToListAsync();
         }
 
-        public async Task AddGameAsync(Game entity, List<int> devIds, List<int> pubIds, List<int> genIds)
+        public async Task AddGameAsync(Game entity, List<int> devIds, List<int> pubIds, List<int> genIds, List<int> userIds)
         {
             entity.Developers = await GetAllDevsAsync(devIds);
             entity.Publishers = await GetAllPublishersAsync(pubIds);
             entity.Genres = await GetAllGenresAsync(genIds);
+            entity.Users = await GetAllUsersAsync(userIds);
             Insert(entity);
             await SaveChangesAsync();
         }
@@ -162,7 +169,7 @@ namespace GameLibrary.Database.Repositories
             await SaveChangesAsync();
         }
 
-        public async Task UpdateGameAsync(int id, Game updatedEntity, List<int>? devIds, List<int>? pubIds, List<int>? genIds)
+        public async Task UpdateGameAsync(int id, Game updatedEntity, List<int>? devIds, List<int>? pubIds, List<int>? genIds, List<int>? userIds)
         {
             var currentGame= await GetGameByIdAsync(id);
 
@@ -203,10 +210,9 @@ namespace GameLibrary.Database.Repositories
                 currentGame.Genres = await GetAllGenresAsync(genIds);
             }
 
-            // TODO: SI AICI E PROBLEMA CA NU AM PASAT USERII IN FUNCTIE !!!
-            if (updatedEntity.Users != null && updatedEntity.Users.Count > 0)
+            if (userIds != null)
             {
-                currentGame.Users = updatedEntity.Users;
+                currentGame.Users = await GetAllUsersAsync(userIds);
             }
 
             Update(currentGame);

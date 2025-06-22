@@ -42,7 +42,7 @@ namespace GameLibrary.Core.Mapping
             {
                 Id = publisher.Id,
                 Name = publisher.Name,
-                GamesNames = publisher.Games?.Select(g => g.Name).ToList() ?? new List<string>(),
+                GamesNames = publisher.Games?.Where(p => p.DeletedAt == null).Select(g => g.Name).ToList() ?? new List<string>(),
                 CreatedAt = publisher.CreatedAt,
                 ModifiedAt = publisher.ModifiedAt,
                 DeletedAt = publisher.DeletedAt

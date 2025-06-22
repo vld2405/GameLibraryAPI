@@ -41,7 +41,7 @@ namespace GameLibrary.Core.Mapping
             {
                 Id = genre.Id,
                 Name = genre.Name,
-                GamesNames = genre.Games?.Select(g => g.Name).ToList() ?? new List<string>(),
+                GamesNames = genre.Games?.Where(g => g.DeletedAt == null).Select(g => g.Name).ToList() ?? new List<string>(),
                 CreatedAt = genre.CreatedAt,
                 ModifiedAt = genre.ModifiedAt,
                 DeletedAt = genre.DeletedAt
