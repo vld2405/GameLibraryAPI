@@ -67,6 +67,32 @@ namespace GameLibrary.Database.Repositories
             return await query.Include(d => d.Games).ToListAsync();
         }
 
+        public async Task<(IEnumerable<Developer> Developers, int TotalCount)> GetDevelopersPaginatedAndFilteredAsync(int pageNumber, int pageSize, string? name = null, string? sortOrder = "asc")
+        {
+            if (pageNumber < 1) pageNumber = 1;
+            if (pageSize < 1) pageSize = 10;
+
+            var query = GetRecords().Include(d => d.Games).AsQueryable();
+
+            if (!string.IsNullOrEmpty(name))
+            {
+                query = query.Where(d => d.Name.ToLower().Contains(name.ToLower()));
+            }
+
+            query = sortOrder?.ToLower() == "desc"
+                ? query.OrderByDescending(d => d.Name)
+                : query.OrderBy(d => d.Name);
+
+            var totalCount = await query.CountAsync();
+
+            var items = await query
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToListAsync();
+
+            return (items, totalCount);
+        }
+
         public async Task AddDevAsync(Developer entity)
         {
             Insert(entity);

@@ -3,6 +3,7 @@ using GameLibrary.Core.Dtos.Responses;
 using GameLibrary.Core.Mapping;
 using GameLibrary.Database.Entities;
 using GameLibrary.Database.Repositories;
+using Microsoft.AspNetCore.Mvc;
 
 namespace GameLibrary.Core.Services;
 
@@ -49,6 +50,12 @@ public class DevelopersService(DeveloperRepository devsRepository)
     {
         var result = await devsRepository.GetDevelopersFilteredAsync(name, sortOrder);
         return result.Select(d => d.ToResponseDto()).ToList();
+    }
+    
+    public async Task<(IEnumerable<GetDeveloperResponse> Items, int TotalCount)> GetDevelopersPaginatedAndFilteredAsync(int pageNumber, int pageSize, string? name = null, string? sortOrder = "asc")
+    {
+        var (result, total) = await devsRepository.GetDevelopersPaginatedAndFilteredAsync(pageNumber, pageSize, name, sortOrder);
+        return (result.Select(d => d.ToResponseDto()).ToList(), total);
     }
 
     public async Task SoftDeleteDeveloperAsync(int id)

@@ -66,7 +66,12 @@ namespace GameLibrary.Core.Services
             }
 
             User user = new User();
-            user.Games = await GetAllGamesAsync(payload.GamesIds);
+
+            if(payload.GamesIds != null)
+            {
+                user.Games = await GetAllGamesAsync(payload.GamesIds);
+            }
+
             await userRepository.AddGameToUserAsync(id, user);
         }
 

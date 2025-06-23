@@ -8,6 +8,6 @@ namespace GameLibrary.Core.Dtos.Requests
 {
     public class AddGameToUserRequest
     {
-        public List<int> GamesIds { get; set; }
+        public List<int>? GamesIds { get; set; }
     }
 }

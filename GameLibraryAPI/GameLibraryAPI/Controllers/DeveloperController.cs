@@ -54,6 +54,17 @@ namespace GameLibrary.Api.Controllers
             return Ok(result);
         }
 
+        [HttpGet("get-developers-paginated-filtered")]
+        public async Task<IActionResult> GetDevelopersPaginatedAndFilteredAsync([FromQuery] int pageNumber, [FromQuery] int pageSize, [FromQuery] string? name = null, [FromQuery] string? sortOrder = "asc")
+        {
+            var paged = await devsService.GetDevelopersPaginatedAndFilteredAsync(pageNumber, pageSize, name, sortOrder);
+            return Ok(new
+            {
+                Developers = paged.Items,
+                TotalDevs = paged.TotalCount
+            });
+        }
+
         [HttpGet("get-developers-by-{id}")]
         public async Task<IActionResult> GetDeveloperFromIdAsync(int id)
         {

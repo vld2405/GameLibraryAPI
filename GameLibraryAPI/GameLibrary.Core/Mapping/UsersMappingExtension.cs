@@ -27,7 +27,9 @@ namespace GameLibrary.Core.Mapping
             {
                 Username = user.Username,
                 Email = user.Email,
-                Password = user.Password
+                Password = user.Password,
+                IsAdmin = user.IsAdmin,
+                Games = user.Games?.Where(u => u.DeletedAt == null).Select(g => g.Name).ToList() ?? new List<string>(),
             };
         }
 
