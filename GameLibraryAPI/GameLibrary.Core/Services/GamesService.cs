@@ -7,16 +7,40 @@ using System.ComponentModel;
 
 namespace GameLibrary.Core.Services;
 
-public class GamesService(GameRepository gameRepository)
+public class GamesService(GameRepository gameRepository,
+                          DeveloperRepository devsRepository,
+                          PublisherRepository publisherRepository,
+                          GenreRepository genreRepository,
+                          UserRepository userRepository
+                          )
 {
+    public async Task<List<Developer>> GetAllDevsAsync(List<int> devIds)
+    {
+        return await devsRepository.GetDevelopersByIdsAsync(devIds);
+    }
+    public async Task<List<Publisher>> GetAllPublishersAsync(List<int> pubIds)
+    {
+        return await publisherRepository.GetPublishersByIdsAsync(pubIds);
+    }
+    public async Task<List<Genre>> GetAllGenresAsync(List<int> genIds)
+    {
+        return await genreRepository.GetGenresByIdsAsync(genIds);
+    }
+    public async Task<List<User>> GetAllUsersAsync(List<int> userIds)
+    {
+        return await userRepository.GetUsersByIdsAsync(userIds);
+    }
     public async Task AddGameAsync(AddGameRequest payload)
     {
         if(payload == null) 
             throw new ArgumentNullException(nameof(payload));
 
         var newGame = payload.ToEntity();
-
-        await gameRepository.AddGameAsync(newGame, payload.DeveloperIds, payload.PublisherIds, payload.GenreIds, payload.UserIds);
+        newGame.Developers = await GetAllDevsAsync(payload.DeveloperIds);
+        newGame.Publishers = await GetAllPublishersAsync(payload.PublisherIds);
+        newGame.Genres = await GetAllGenresAsync(payload.GenreIds);
+        newGame.Users = await GetAllUsersAsync(payload.UserIds);
+        await gameRepository.AddGameAsync(newGame);
     }
 
     public async Task UpdateGameAsync(int id, UpdateGameRequest payload)
@@ -25,8 +49,29 @@ public class GamesService(GameRepository gameRepository)
             throw new ArgumentNullException(nameof(payload));
 
         var updatedEntity = payload.ToEntity();
+        
 
-        await gameRepository.UpdateGameAsync(id, updatedEntity, payload.DeveloperIds, payload.PublisherIds, payload.GenreIds, payload.UserIds);
+        if (payload.DeveloperIds != null)
+        {
+            updatedEntity.Developers = await GetAllDevsAsync(payload.DeveloperIds);
+        }
+
+        if (payload.PublisherIds != null)
+        {
+            updatedEntity.Publishers = await GetAllPublishersAsync(payload.PublisherIds);
+        }
+
+        if (payload.GenreIds != null)
+        {
+            updatedEntity.Genres = await GetAllGenresAsync(payload.GenreIds);
+        }
+
+        if (payload.UserIds != null)
+        {
+            updatedEntity.Users = await GetAllUsersAsync(payload.UserIds);
+        }
+
+        await gameRepository.UpdateGameAsync(id, updatedEntity);
     }
 
     public async Task<IEnumerable<Game>> GetGamesAsync()

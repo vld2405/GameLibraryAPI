@@ -6,7 +6,7 @@ using GameLibrary.Infrastructure.Base;
 
 namespace GameLibrary.Api.Controllers
 {
-    // TODO: GAMES trebuie sa aiba si getter filtrat
+    // TODO: Controller cu filtrare si paginare in acelasi loc
     
     [ApiController]
     [Route("developer")]

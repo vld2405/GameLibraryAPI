@@ -99,5 +99,12 @@ namespace GameLibrary.Database.Repositories
 
             return result;
         }
+
+        public async Task<List<User>> GetUsersByIdsAsync(List<int> userIds)
+        {
+            return await GetRecords()
+                .Where(u => userIds.Contains(u.Id) && u.DeletedAt == null)
+                .ToListAsync();
+        }
     }
 }

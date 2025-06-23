@@ -104,5 +104,11 @@ namespace GameLibrary.Database.Repositories
             Update(currentDeveloper);
             await SaveChangesAsync();
         }
+        public async Task<List<Developer>> GetDevelopersByIdsAsync(List<int> devIds)
+        {
+            return await GetRecords()
+                .Where(d => devIds.Contains(d.Id) && d.DeletedAt == null)
+                .ToListAsync();
+        }
     }
 }

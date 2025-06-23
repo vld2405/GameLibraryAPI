@@ -133,41 +133,9 @@ namespace GameLibrary.Database.Repositories
         }
 
         // astea trebuie scoase
-        public async Task<List<Developer>> GetAllDevsAsync(List<int> devIds)
-        {
-            return await _databaseContext.Developers
-                .Where(d => devIds.Contains(d.Id) && d.DeletedAt == null)
-                .ToListAsync();
-        }
 
-        // astea trebuie scoase
-        public async Task<List<Publisher>> GetAllPublishersAsync(List<int> pubIds)
+        public async Task AddGameAsync(Game entity)
         {
-            return await _databaseContext.Publishers
-                .Where(p => pubIds.Contains(p.Id) && p.DeletedAt == null)
-                .ToListAsync();
-        }
-
-        // astea trebuie scoase
-        public async Task<List<Genre>> GetAllGenresAsync(List<int> genIds)
-        {
-            return await _databaseContext.Genres
-                .Where(g => genIds.Contains(g.Id) && g.DeletedAt == null)
-                .ToListAsync();
-        }
-        public async Task<List<User>> GetAllUsersAsync(List<int> userIds)
-        {
-            return await _databaseContext.Users
-                .Where(u => userIds.Contains(u.Id) && u.DeletedAt == null)
-                .ToListAsync();
-        }
-
-        public async Task AddGameAsync(Game entity, List<int> devIds, List<int> pubIds, List<int> genIds, List<int> userIds)
-        {
-            entity.Developers = await GetAllDevsAsync(devIds);
-            entity.Publishers = await GetAllPublishersAsync(pubIds);
-            entity.Genres = await GetAllGenresAsync(genIds);
-            entity.Users = await GetAllUsersAsync(userIds);
             Insert(entity);
             await SaveChangesAsync();
         }
@@ -185,7 +153,7 @@ namespace GameLibrary.Database.Repositories
             await SaveChangesAsync();
         }
 
-        public async Task UpdateGameAsync(int id, Game updatedEntity, List<int>? devIds, List<int>? pubIds, List<int>? genIds, List<int>? userIds)
+        public async Task UpdateGameAsync(int id, Game updatedEntity)
         {
             var currentGame= await GetGameByIdAsync(id);
 
@@ -209,24 +177,24 @@ namespace GameLibrary.Database.Repositories
                 currentGame.Description = updatedEntity.Description;
             }
 
-            if(devIds != null)
+            if(updatedEntity.Developers != null)
             {
-                currentGame.Developers = await GetAllDevsAsync(devIds);
+                currentGame.Developers = updatedEntity.Developers;
             }
 
-            if (pubIds != null)
+            if (updatedEntity.Publishers != null)
             {
-                currentGame.Publishers = await GetAllPublishersAsync(pubIds);
+                currentGame.Publishers = updatedEntity.Publishers;
             }
 
-            if (genIds != null)
+            if (updatedEntity.Genres != null)
             {
-                currentGame.Genres = await GetAllGenresAsync(genIds);
+                currentGame.Genres = updatedEntity.Genres;
             }
 
-            if (userIds != null)
+            if (updatedEntity.Users != null)
             {
-                currentGame.Users = await GetAllUsersAsync(userIds);
+                currentGame.Users = updatedEntity.Users;
             }
 
             Update(currentGame);

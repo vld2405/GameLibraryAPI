@@ -99,5 +99,12 @@ namespace GameLibrary.Database.Repositories
             Update(currentPublisher);
             await SaveChangesAsync();
         }
+
+        public async Task<List<Publisher>> GetPublishersByIdsAsync(List<int> pubIds)
+        {
+            return await GetRecords()
+                .Where(p => pubIds.Contains(p.Id) && p.DeletedAt == null)
+                .ToListAsync();
+        }
     }
 }

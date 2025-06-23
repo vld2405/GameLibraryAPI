@@ -102,5 +102,12 @@ namespace GameLibrary.Database.Repositories
             Update(currentGenre);
             await SaveChangesAsync();
         }
+
+        public async Task<List<Genre>> GetGenresByIdsAsync(List<int> genreIds)
+        {
+            return await GetRecords()
+                .Where(p => genreIds.Contains(p.Id) && p.DeletedAt == null)
+                .ToListAsync();
+        }
     }
 }
