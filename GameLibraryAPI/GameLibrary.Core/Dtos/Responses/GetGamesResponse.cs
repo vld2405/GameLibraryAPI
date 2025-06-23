@@ -19,5 +19,6 @@ namespace GameLibrary.Core.Dtos.Responses
         public List<string> GenreNames { get; set; }
         public List<string> DeveloperNames { get; set; }
         public List<string> PublisherNames { get; set; }
+        public List<string> OwnedByUsernames { get; set; }
     }
 }

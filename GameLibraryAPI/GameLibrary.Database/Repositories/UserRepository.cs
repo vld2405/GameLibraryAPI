@@ -1,5 +1,7 @@
 ﻿using GameLibrary.Database.Context;
 using GameLibrary.Database.Entities;
+using GameLibrary.Infrastructure.Exceptions;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -94,8 +96,8 @@ namespace GameLibrary.Database.Repositories
 
                 .FirstOrDefault();
 
-            //if (result == null)
-                //throw new ResourceMissingException("User not found");
+            if (result == null)
+                throw new NotFoundException("User not found");
 
             return result;
         }
@@ -105,6 +107,24 @@ namespace GameLibrary.Database.Repositories
             return await GetRecords()
                 .Where(u => userIds.Contains(u.Id) && u.DeletedAt == null)
                 .ToListAsync();
+        }
+
+        public async Task AddGameToUserAsync(int id, User user)
+        {
+            var currentUser = await GetUserByIdAsync(id);
+
+            if (currentUser == null)
+            {
+                throw new NotFoundException($"User with ID {id} not found.");
+            }
+
+            if (user.Games != null)
+            {
+                currentUser.Games = user.Games;
+            }
+
+            Update(currentUser);
+            await SaveChangesAsync();
         }
     }
 }

@@ -11,8 +11,7 @@ public class GamesService(GameRepository gameRepository,
                           DeveloperRepository devsRepository,
                           PublisherRepository publisherRepository,
                           GenreRepository genreRepository,
-                          UserRepository userRepository
-                          )
+                          UserRepository userRepository)
 {
     public async Task<List<Developer>> GetAllDevsAsync(List<int> devIds)
     {

@@ -5,7 +5,9 @@ using GameLibrary.Database.Repositories;
 
 namespace GameLibrary.Core.Services
 {
-    public class UserService(AuthService authService, UserRepository userRepository)
+    public class UserService(AuthService authService, 
+                             UserRepository userRepository,
+                             GameRepository gameRepository)
     {
         public async Task RegisterAsync(RegisterRequest registerData)
         {
@@ -53,6 +55,23 @@ namespace GameLibrary.Core.Services
             {
                 return "User";
             }
+        }
+
+        public async Task AddGameToUserLibraryAsync(int id, AddGameToUserRequest payload)
+        {
+            if(payload == null)
+            {
+                throw new ArgumentNullException(nameof(payload));
+            }
+
+            User user = new User();
+            user.Games = await GetAllGamesAsync(payload.GamesIds);
+            await userRepository.AddGameToUserAsync(id, user);
+        }
+
+        public async Task<List<Game>> GetAllGamesAsync(List<int> gamesIds)
+        {
+            return await gameRepository.GetGamesByIdsAsync(gamesIds);
         }
     }
 }

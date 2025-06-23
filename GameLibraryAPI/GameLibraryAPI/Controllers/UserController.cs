@@ -26,5 +26,12 @@ namespace GameLibrary.Api.Controllers
 
             return Ok(new { token = jwtToken });
         }
+
+        [HttpPatch("add-game-to-user-{id}")]
+        public async Task<IActionResult> AddGameToUserAccountAsync(int id, [FromBody] AddGameToUserRequest payload)
+        {
+            await userService.AddGameToUserLibraryAsync(id, payload);
+            return Ok("Game successfully added to user library.");
+        }
     }
 }

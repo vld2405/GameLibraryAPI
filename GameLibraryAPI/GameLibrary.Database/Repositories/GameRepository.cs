@@ -40,6 +40,7 @@ namespace GameLibrary.Database.Repositories
                 .Include(g => g.Developers)
                 .Include(g => g.Publishers)
                 .Include(g => g.Genres)
+                .Include(g => g.Users)
                 .ToListAsync();
 
             return games;
@@ -132,8 +133,6 @@ namespace GameLibrary.Database.Repositories
             return await query.ToListAsync();
         }
 
-        // astea trebuie scoase
-
         public async Task AddGameAsync(Game entity)
         {
             Insert(entity);
@@ -199,6 +198,13 @@ namespace GameLibrary.Database.Repositories
 
             Update(currentGame);
             await SaveChangesAsync();
+        }
+
+        public async Task<List<Game>> GetGamesByIdsAsync(List<int> gamesIds)
+        {
+            return await GetRecords()
+                .Where(g => gamesIds.Contains(g.Id) && g.DeletedAt == null)
+                .ToListAsync();
         }
     }
 }
