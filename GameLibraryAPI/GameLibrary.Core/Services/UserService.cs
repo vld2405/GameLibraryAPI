@@ -1,4 +1,5 @@
-﻿using GameLibrary.Core.Dtos.Requests;
+﻿using GameLibrary.Core.Dtos.Common;
+using GameLibrary.Core.Dtos.Requests;
 using GameLibrary.Core.Mapping;
 using GameLibrary.Database.Entities;
 using GameLibrary.Database.Repositories;
@@ -72,6 +73,12 @@ namespace GameLibrary.Core.Services
         public async Task<List<Game>> GetAllGamesAsync(List<int> gamesIds)
         {
             return await gameRepository.GetGamesByIdsAsync(gamesIds);
+        }
+
+        public async Task<IEnumerable<UserDto>> GetUsersAsync()
+        {
+            var result = await userRepository.GetUsersAsync();
+            return result.Select(u => u.ToDto());
         }
     }
 }

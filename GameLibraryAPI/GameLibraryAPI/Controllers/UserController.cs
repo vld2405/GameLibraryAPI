@@ -33,5 +33,13 @@ namespace GameLibrary.Api.Controllers
             await userService.AddGameToUserLibraryAsync(id, payload);
             return Ok("Game successfully added to user library.");
         }
+
+        [HttpGet("get-users")]
+        public async Task<IActionResult> GetUsersAsync()
+        {
+            var users = await userService.GetUsersAsync();
+            return Ok(users);
+        }
+
     }
 }
