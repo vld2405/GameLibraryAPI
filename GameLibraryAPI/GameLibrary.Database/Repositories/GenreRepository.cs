@@ -1,5 +1,6 @@
 ﻿using GameLibrary.Database.Context;
 using GameLibrary.Database.Entities;
+using GameLibrary.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,14 @@ namespace GameLibrary.Database.Repositories
 
         public async Task<Genre?> GetGenreByIdAsync(int id)
         {
-            return await GetRecords().Include(g => g.Games).FirstOrDefaultAsync(g => g.Id == id);
+            var result = await GetRecords().Include(g => g.Games).FirstOrDefaultAsync(g => g.Id == id);
+
+            if(result == null)
+            {
+                throw new NotFoundException($"Genre with ID {id} not found.");
+            }
+
+            return result;
         }
         public async Task<IEnumerable<Genre>> GetGenresAsync()
         {
@@ -66,8 +74,12 @@ namespace GameLibrary.Database.Repositories
         public async Task SoftDeleteGenreAsync(int id)
         {
             var genre = await GetFirstOrDefaultAsync(id);
+
             if (genre == null)
-                throw new KeyNotFoundException($"Genre with ID {id} not found.");
+            {
+                throw new NotFoundException($"Genre with ID {id} not found.");
+            }
+                
 
             SoftDelete(genre);
             await SaveChangesAsync();
@@ -79,9 +91,7 @@ namespace GameLibrary.Database.Repositories
 
             if (currentGenre == null)
             {
-                //Middleware
-                //throw new NotFoundException(id);
-                throw new KeyNotFoundException();
+                throw new NotFoundException($"Genre with ID {id} not found.");
             }
 
             if (!string.IsNullOrEmpty(updatedEntity.Name))

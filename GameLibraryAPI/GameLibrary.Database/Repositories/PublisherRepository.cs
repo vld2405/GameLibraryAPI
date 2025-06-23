@@ -1,6 +1,7 @@
 ﻿using Azure.Core;
 using GameLibrary.Database.Context;
 using GameLibrary.Database.Entities;
+using GameLibrary.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ChangeTracking.Internal;
 using System;
@@ -18,7 +19,14 @@ namespace GameLibrary.Database.Repositories
 
         public async Task<Publisher?> GetPublisherByIdAsync(int id)
         {
-            return await GetRecords().Include(p => p.Games).FirstOrDefaultAsync(p => p.Id == id);
+            var result = await GetRecords().Include(p => p.Games).FirstOrDefaultAsync(p => p.Id == id);
+
+            if (result == null)
+            {
+                throw new NotFoundException($"Publisher with ID {id} not found.");
+            }
+
+            return result;
         }
 
         public async Task<IEnumerable<Publisher>> GetPublishersAsync()
@@ -66,7 +74,9 @@ namespace GameLibrary.Database.Repositories
         {
             var publisher = await GetFirstOrDefaultAsync(id);
             if (publisher == null)
-                throw new KeyNotFoundException($"Publisher with ID {id} not found.");
+            {
+                throw new NotFoundException($"Publisher with ID {id} not found.");
+            }
 
             SoftDelete(publisher);
             await SaveChangesAsync();
@@ -78,9 +88,7 @@ namespace GameLibrary.Database.Repositories
 
             if (currentPublisher == null)
             {
-                //TODO: Middleware
-                //throw new NotFoundException(id);
-                throw new KeyNotFoundException();
+                throw new NotFoundException($"Publisher with ID {id} not found.");
             }
 
             if (!string.IsNullOrEmpty(updatedEntity.Name))

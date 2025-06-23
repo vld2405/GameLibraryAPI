@@ -1,5 +1,6 @@
 ﻿using GameLibrary.Database.Context;
 using GameLibrary.Database.Entities;
+using GameLibrary.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -19,11 +20,18 @@ namespace GameLibrary.Database.Repositories
 
         public async Task<Game?> GetGameByIdAsync(int id)
         {
-            return await GetRecords()
+            var result = await GetRecords()
                 .Include(g => g.Developers)
                 .Include(g => g.Publishers)
                 .Include(g => g.Genres)
                 .FirstOrDefaultAsync(g => g.Id == id);
+
+            if(result == null)
+            {
+                throw new NotFoundException($"Game with ID {id} not found.");
+            }
+
+            return result;
         }
 
         public async Task<IEnumerable<Game>> GetGamesWithInfoAsync()
@@ -124,18 +132,23 @@ namespace GameLibrary.Database.Repositories
             return await query.ToListAsync();
         }
 
+        // astea trebuie scoase
         public async Task<List<Developer>> GetAllDevsAsync(List<int> devIds)
         {
             return await _databaseContext.Developers
                 .Where(d => devIds.Contains(d.Id) && d.DeletedAt == null)
                 .ToListAsync();
         }
+
+        // astea trebuie scoase
         public async Task<List<Publisher>> GetAllPublishersAsync(List<int> pubIds)
         {
             return await _databaseContext.Publishers
                 .Where(p => pubIds.Contains(p.Id) && p.DeletedAt == null)
                 .ToListAsync();
         }
+
+        // astea trebuie scoase
         public async Task<List<Genre>> GetAllGenresAsync(List<int> genIds)
         {
             return await _databaseContext.Genres
@@ -162,8 +175,11 @@ namespace GameLibrary.Database.Repositories
         public async Task SoftDeleteGameAsync(int id)
         {
             var game = await GetFirstOrDefaultAsync(id);
+
             if (game == null)
-                throw new KeyNotFoundException($"Game with ID {id} not found.");
+            {
+                throw new NotFoundException($"Game with ID {id} not found.");
+            }
 
             SoftDelete(game);
             await SaveChangesAsync();
@@ -175,9 +191,7 @@ namespace GameLibrary.Database.Repositories
 
             if (currentGame == null)
             {
-                //Middleware
-                //throw new NotFoundException(id);
-                throw new KeyNotFoundException();
+                throw new NotFoundException($"Game with ID {id} not found.");
             }
 
             if (!string.IsNullOrEmpty(updatedEntity.Name))

@@ -6,9 +6,6 @@ using GameLibrary.Infrastructure.Base;
 
 namespace GameLibrary.Api.Controllers
 {
-
-    // !!!!!! jocurile soft deleted apar in alte tabele !!!!!
-    // TODO: MIDDLEWARE
     // TODO: GAMES trebuie sa aiba si getter filtrat
     
     [ApiController]

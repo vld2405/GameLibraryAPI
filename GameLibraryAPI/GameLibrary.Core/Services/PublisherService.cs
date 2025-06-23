@@ -20,7 +20,9 @@ public class PublisherService(PublisherRepository publisherRepository)
     public async Task UpdatePublisherAsync(int id, UpdatePublisherRequest payload)
     {
         if (payload == null)
+        {
             throw new ArgumentNullException(nameof(payload));
+        }
 
         var updatedEntity = payload.ToEntity();
 

@@ -1,5 +1,6 @@
 ﻿using GameLibrary.Database.Context;
 using GameLibrary.Database.Entities;
+using GameLibrary.Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,14 @@ namespace GameLibrary.Database.Repositories
 
         public async Task<Developer?> GetDeveloperByIdAsync(int id)
         {
-            return await GetRecords().Include(d => d.Games).FirstOrDefaultAsync(d => d.Id == id);
+            var result = await GetRecords().Include(d => d.Games).FirstOrDefaultAsync(d => d.Id == id);
+
+            if (result == null)
+            {
+                throw new NotFoundException($"Developer with ID {id} not found.");
+            }
+
+            return result;
         }
 
         public async Task<IEnumerable<Developer>> GetDevelopersAsync()
@@ -68,8 +76,11 @@ namespace GameLibrary.Database.Repositories
         public async Task SoftDeleteDevAsync(int id)
         {
             var developer = await GetFirstOrDefaultAsync(id);
+
             if (developer == null)
-                throw new KeyNotFoundException($"Developer with ID {id} not found.");
+            {
+                throw new NotFoundException($"Developer with ID {id} not found.");
+            }
 
             SoftDelete(developer);
             await SaveChangesAsync();
@@ -82,9 +93,7 @@ namespace GameLibrary.Database.Repositories
 
             if (currentDeveloper == null)
             {
-                //Middleware
-                //throw new NotFoundException(id);
-                throw new KeyNotFoundException();
+                throw new NotFoundException($"Developer with ID {id} not found.");
             }
 
             if (!string.IsNullOrEmpty(updatedEntity.Name))
