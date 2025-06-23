@@ -21,7 +21,7 @@ namespace GameLibrary.Core.Mapping
             return user;
         }
 
-        public static UserDto ToDto(User user)
+        public static UserDto ToDto(this User user)
         {
             return new UserDto
             {
