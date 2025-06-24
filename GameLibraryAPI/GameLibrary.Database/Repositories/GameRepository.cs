@@ -24,6 +24,7 @@ namespace GameLibrary.Database.Repositories
                 .Include(g => g.Developers)
                 .Include(g => g.Publishers)
                 .Include(g => g.Genres)
+                .Include(g => g.Users)
                 .FirstOrDefaultAsync(g => g.Id == id);
 
             if(result == null)
@@ -53,7 +54,12 @@ namespace GameLibrary.Database.Repositories
 
         public async Task<(IEnumerable<Game> games, int totalCount)> GetGamesAsync(int? pageNumber = null, int? pageSize = null)
         {
-            IQueryable<Game> query = GetRecords().Include(g => g.Users).Include(g => g.Genres).Include(g => g.Developers).Include(g => g.Publishers);
+            IQueryable<Game> query = GetRecords()
+                .Include(g => g.Users)
+                .Include(g => g.Genres)
+                .Include(g => g.Developers)
+                .Include(g => g.Publishers)
+                .Include(g => g.Users);
             var totalCount = await query.CountAsync();
             if (pageNumber.HasValue && pageSize.HasValue && pageNumber > 0 && pageSize > 0)
             {
